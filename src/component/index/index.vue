@@ -10,7 +10,7 @@ export default {
     return {}
   },
   components: { // 注册组件，这很重要
-    entry
+    entry // 相当于 entry: entry
   }
 }
 </script>
