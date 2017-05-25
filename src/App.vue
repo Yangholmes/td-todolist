@@ -1,10 +1,6 @@
 <template>
   <div id="app">
-    <router-link to="index" replace>入口</router-link>
-    <router-link to="note">写日志</router-link>
-    <router-link to="read" >查看日志</router-link>
-
-    <router-view id="content"></router-view>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -20,5 +16,15 @@ export default {
 </script>
 
 <style>
-
+  *{
+      font-family: "Microsoft Yahei","Lucida Grande","Lucida Sans Unicode",Helvetica,Arial,Verdana,sans-serif;
+      font-size: 100%;
+      color: black;
+  }
+  html,
+  body,
+  #app {
+    width: 100%; height: 100%;
+    margin: 0; padding: 0;
+  }
 </style>
