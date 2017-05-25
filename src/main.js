@@ -5,6 +5,9 @@ import Yang from 'yangjs'
 
 import App from './App.vue'
 
+Vue.use(VueRouter)
+Vue.use(Yang)
+
 import routes from './routes.js'
 const router = new VueRouter({
   mode: 'history',
