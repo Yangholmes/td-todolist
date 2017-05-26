@@ -32,6 +32,7 @@ export default {
   a.entry-router{
     color: white;
     font-size: 5em;
+    font-weight: bold;
     text-decoration: none;
 
     display: block;

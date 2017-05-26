@@ -19,7 +19,7 @@ export default {
   *{
       font-family: "Microsoft Yahei","Lucida Grande","Lucida Sans Unicode",Helvetica,Arial,Verdana,sans-serif;
       font-size: 100%;
-      color: black;
+      /*color: black;*/
       margin: 0; padding: 0;
   }
   html,
