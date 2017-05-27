@@ -2,7 +2,7 @@
   <div class="board">
     <div class="board-head">
       <h1>今年任务</h1>
-      <div class="task-add el-icon-plus" @touchend=""></div>
+      <div class="task-add el-icon-plus" @touchend.stop.prevent="createTask"></div>
     </div>
     <ul>
       <li v-for="task in tasks">
@@ -10,48 +10,56 @@
           <div class="content">
             <h2 class="task-name">{{task.taskName}}</h2>
             <div class="task-info">
-              <p class="schedule-date">计划完成：<span>{{task.scheduleDate}}</span></p>
-              <p class="finish-date">完成日期：<span>{{task.finishDate}}</span></p>
-              <div class="rate" @touchend="rate(task, $event)" @click.stop="operate(task)">
+              <p class="create-date">创建日期：<span>{{task.createDate}}</span></p>
+              <p class="schedule-date">计划日期：<span>{{task.scheduleDate}}</span></p>
+              <div class="rate" v-if="task.finishDate">
                 <el-rate v-model="task.rate" :colors="['#99A9BF', '#F7BA2A', '#FF9900']">
                 </el-rate>
               </div>
             </div>
           </div>
-          <div class="create-date">{{task.createDate}}</div>
+          <img src="../../assets/finish.png" v-if="task.finishDate" class="finish-badge">
+          <div class="finish-date">{{task.finishDate}}</div>
         </div>
         <transition name="toggle">
-          <div class="toolbar" v-if="task.operate">
+          <div class="toolbar" v-if="task.operate && !task.finishDate">
+            <el-button class="" size="mini" type="success" icon="check"></el-button>
             <el-button class="" size="mini" type="info" icon="edit"></el-button>
             <el-button class="" size="mini" type="danger" icon="delete"></el-button>
-            <el-button class="" size="mini" type="success" icon="check"></el-button>
             <el-button class="" size="mini" type="warning" icon="close"></el-button>
           </div>
         </transition>
       </li>
     </ul>
+
+    <task-dialog :tasks="tasks" :taskDialogShow="taskDialogShow" @closeTaskDialog="closeTaskDialog"></task-dialog>
   </div>
 </template>
 
 <script>
+import taskDialog from './task-dialog.vue'
 export default {
   name: 'board',
+  components: {
+    taskDialog
+  },
   data() {
       return {
+        taskDialogShow: false,
         tasks: [{
           id: 1,
           taskName: '营业额突破2亿美金',
-          createDate: '01/10',
+          createDate: '2017/01/10',
           scheduleDate: '2017/05/31',
-          finishDate: '2017/05/31',
+          finishDate: '05/31',
           rate: 0,
           operate: false,
         },{
           id: 2,
           taskName: '利润1亿美金',
-          createDate: '01/10',
+          createDate: '2017/01/10',
           scheduleDate: '2017/05/31',
-          finishDate: '2017/05/31',
+          finishDate: '',
           rate: 0,
           operate: false,
         },{
@@ -59,7 +67,7 @@ export default {
           taskName: '新开发10个客户',
           createDate: '01/10',
           scheduleDate: '2017/05/31',
-          finishDate: '2017/05/31',
+          finishDate: null,
           rate: 0,
           operate: false,
         }]
@@ -70,6 +78,13 @@ export default {
     },
     operate (task) {
       task.operate = !task.operate
+    },
+    createTask () {
+      this.taskDialogShow = true;
+    },
+    closeTaskDialog () {
+      console.log('emit!');
+      this.taskDialogShow = false;
     }
   }
 }
@@ -77,10 +92,11 @@ export default {
 
 <style>
 .board{
+  background-color: white;
   height: auto; width: calc( 100% - 2em );
   margin: 0 auto;
 
-  border: 1px solid hsla(0,0%,59%,.9);
+  /*border: 1px solid hsla(0,0%,59%,.9);*/
   border-radius: 5px;
 
   box-shadow: 1px 0 5px hsla(0,0%,59%,.9);
@@ -147,9 +163,16 @@ export default {
 .board ul li .task .task-info p{
   display: inline-block;
 }
-.board ul li .task .create-date{
+.board ul li .task .finish-date{
   font-size: 1em;
-  color: gray
+  width: 3em; height: 3em;
+  line-height: 3em;
+  color: rgba(100, 100, 100, .7);
+}
+.finish-badge{
+  position: absolute;
+  right: .5em;
+  width: 3em; height: 3em;
 }
 
 .toolbar{
