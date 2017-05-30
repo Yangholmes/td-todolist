@@ -23,16 +23,16 @@
         </div>
         <transition name="toggle">
           <div class="toolbar" v-if="task.operate && !task.finishDate">
-            <el-button class="" size="mini" type="success" icon="check"></el-button>
-            <el-button class="" size="mini" type="info" icon="edit"></el-button>
-            <el-button class="" size="mini" type="danger" icon="delete"></el-button>
-            <el-button class="" size="mini" type="warning" icon="close"></el-button>
+            <el-button class="" size="mini" icon="check"  @touchend="finishTask(task)" @click="finishTask(task)" type="success"></el-button>
+            <el-button class="" size="mini" icon="edit"   @touchend="updateTask(task)" @click="updateTask(task)" type="info"></el-button>
+            <el-button class="" size="mini" icon="delete" @touchend="deleteTask(task)" @click="deleteTask(task)" type="danger"></el-button>
+            <el-button class="" size="mini" icon="close"  @touchend="cancelTask(task)" @click="cancelTask(task)" type="warning"></el-button>
           </div>
         </transition>
       </li>
     </ul>
 
-    <task-dialog :tasks="tasks" :taskDialogShow="taskDialogShow" @closeTaskDialog="closeTaskDialog"></task-dialog>
+    <task-dialog :task="task" :tasks="tasks" :taskDialogShow="taskDialogShow" @closeTaskDialog="closeTaskDialog"></task-dialog>
   </div>
 </template>
 
@@ -46,6 +46,7 @@ export default {
   data() {
       return {
         taskDialogShow: false,
+        task: { taskName: null, scheduleDate: null },
         tasks: [{
           id: 1,
           taskName: '营业额突破2亿美金',
@@ -82,9 +83,26 @@ export default {
     createTask () {
       this.taskDialogShow = true;
     },
+    finishTask (task) {
+      console.log('finish');
+    },
+    retrieveTask (task) {
+      console.log('retrieve');
+    },
+    updateTask (task) {
+      this.task = task;
+      this.taskDialogShow = true;
+    },
+    deleteTask (task) {
+      console.log('delete');
+    },
+    cancelTask (task) {
+      console.log('cancel');
+    },
     closeTaskDialog () {
       console.log('emit!');
       this.taskDialogShow = false;
+      this.task = { taskName: null, scheduleDate: null };
     }
   }
 }

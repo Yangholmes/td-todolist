@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="新建" id="task-dialog" :visible="true" size="large" :visible.sync="taskDialogShow" @close="closetaskDialog">
+  <el-dialog :title="task.taskName?'修改':'新建'" id="task-dialog" :visible="true" size="large" :visible.sync="taskDialogShow" @close="closetaskDialog">
     <el-form :model="task" label-width="5rem" label-position="left">
       <el-form-item label="任务名称">
         <el-input v-model="task.taskName" auto-complete="on"></el-input>
@@ -17,19 +17,19 @@
 
 <script>
 export default {
-  props: ['tasks', 'taskDialogShow'],
+  props: ['task', 'tasks', 'taskDialogShow'],
   data () {
     return {
-      task: {
-        taskName: '',
-        scheduleDate: ''
-      }
     }
   },
   methods: {
     createTask () {
-      console.log(this.task);
+      console.log(this.task.id);
       this.$emit('closeTaskDialog')
+    },
+    updateTask () {
+      console.log(this.task.id);
+      console.log('update');
     },
     closetaskDialog () {
       console.log('close');
