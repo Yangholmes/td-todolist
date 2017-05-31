@@ -2,7 +2,7 @@
   <div class="board">
     <div class="board-head">
       <h1>今年任务</h1>
-      <div class="task-add el-icon-plus" @touchend.stop.prevent="createTask"></div>
+      <div class="task-add el-icon-plus" @touchend.stop.prevent="openCreateTask"></div>
     </div>
     <ul>
       <li v-for="task in tasks">
@@ -23,29 +23,29 @@
         </div>
         <transition name="toggle">
           <div class="toolbar" v-if="task.operate && !task.finishDate">
-            <el-button class="" size="mini" icon="check"  @touchend="finishTask(task)" @click="finishTask(task)" type="success"></el-button>
-            <el-button class="" size="mini" icon="edit"   @touchend="updateTask(task)" @click="updateTask(task)" type="info"></el-button>
-            <el-button class="" size="mini" icon="delete" @touchend="deleteTask(task)" @click="deleteTask(task)" type="danger"></el-button>
-            <el-button class="" size="mini" icon="close"  @touchend="cancelTask(task)" @click="cancelTask(task)" type="warning"></el-button>
+            <div class="toolbar-button toolbar-check" @touchend="finishTask(task)">完成</div>
+            <div class="toolbar-button toolbar-edit" @touchend="openUpdateTask(task)">修改</div>
+            <div class="toolbar-button toolbar-delete" @touchend="deleteTask(task)">删除</div>
+            <div class="toolbar-button toolbar-close" @touchend="cancelTask(task)">取消</div>
           </div>
         </transition>
       </li>
     </ul>
 
-    <task-dialog :task="task" :tasks="tasks" :taskDialogShow="taskDialogShow" @closeTaskDialog="closeTaskDialog"></task-dialog>
+    <task-popup :task="task" :tasks="tasks" :taskPopupShow="taskPopupShow" @createTask="createTask" @updateTask="updateTask" @closeTaskDialog="closeTaskDialog"></task-popup id="task-popup">
   </div>
 </template>
 
 <script>
-import taskDialog from './task-dialog.vue'
+import taskPopup from './task-popup.vue'
 export default {
   name: 'board',
   components: {
-    taskDialog
+    taskPopup
   },
   data() {
       return {
-        taskDialogShow: false,
+        taskPopupShow: false,
         task: { taskName: null, scheduleDate: null },
         tasks: [{
           id: 1,
@@ -80,8 +80,15 @@ export default {
     operate (task) {
       task.operate = !task.operate
     },
+    openCreateTask () {
+      this.taskPopupShow = true;
+    },
+    openUpdateTask (task) {
+      this.task = task;
+      this.taskPopupShow = true;
+    },
     createTask () {
-      this.taskDialogShow = true;
+      console.log('create~');
     },
     finishTask (task) {
       console.log('finish');
@@ -90,8 +97,7 @@ export default {
       console.log('retrieve');
     },
     updateTask (task) {
-      this.task = task;
-      this.taskDialogShow = true;
+      console.log('update');
     },
     deleteTask (task) {
       console.log('delete');
@@ -100,8 +106,7 @@ export default {
       console.log('cancel');
     },
     closeTaskDialog () {
-      console.log('emit!');
-      this.taskDialogShow = false;
+      this.taskPopupShow = false;
       this.task = { taskName: null, scheduleDate: null };
     }
   }
@@ -198,9 +203,27 @@ export default {
   justify-content: space-between;
   margin-top: .5em;
 }
-.toolbar .el-button{
+.toolbar .toolbar-button{
+  font-size: .75em;
+  color: white;
+  text-align: center;
+  display: inline-block;
   margin: 0;
-  width: 20%
+  width: 20%; height: 2em;
+  line-height: 2em;
+  border-radius: 5px;
+}
+.toolbar .toolbar-check{
+  background: #47d847;
+}
+.toolbar-edit{
+  background: #5cabff;
+}
+.toolbar-delete{
+  background: #ff5555;
+}
+.toolbar .toolbar-close{
+  background: #f7db4e;
 }
 .toolbar i{
   color: white;
