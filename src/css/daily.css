@@ -1,0 +1,53 @@
+.daily+.daily {
+    margin-top: 1.5em;
+}
+
+.daily .info {
+    color: #888;
+    overflow-wrap: break-word;
+}
+
+.daily .text {
+    font-size: 14px;
+}
+
+.daily .heading {
+    font-size: 16px;
+}
+
+.daily .item {
+    padding: 10px 0;
+}
+
+.daily .clearfix:before,
+.daily .clearfix:after {
+    display: table;
+    content: "";
+}
+
+.daily .clearfix:after {
+    clear: both
+}
+
+.daily .box-card {
+    width: 100%;
+}
+
+.daily .btn-add {
+    float: right;
+    width: 36px;
+    text-align: center;
+    height: 36px;
+    padding: 0;
+    border-radius: 50%;
+}
+.daily .btn-edit,.daily .btn-delete {
+    width: 18px;
+    text-align: center;
+    height: 18px;
+    padding: 0;
+    border-radius: 50%;
+}
+.daily .text-right {
+    text-align: right;
+}
