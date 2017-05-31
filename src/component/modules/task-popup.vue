@@ -7,7 +7,7 @@
     <div class="task-popup-content">
       <div class="input-field text-field">
         <label class="input-field-label">任务名称:</label>
-        <input type="text" placeholder="请输入任务名称" >
+        <input type="text" placeholder="请输入任务名称" :value="task.taskName">
       </div>
       <div class="input-field date-field">
         <div class="open-date-picker" @touchend="openDatePicker"></div>
