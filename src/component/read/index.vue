@@ -16,7 +16,5 @@ export default {
 
 <style>
 #board{
-  position: absolute;
-  top: 1em; left: 1em
 }
 </style>
