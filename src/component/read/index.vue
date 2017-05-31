@@ -1,5 +1,5 @@
 <template>
-  <board></board>
+  <board id="board"></board>
 </template>
 
 <script>
@@ -15,5 +15,8 @@ export default {
 </script>
 
 <style>
-
+#board{
+  position: absolute;
+  top: 1em; left: 1em
+}
 </style>
