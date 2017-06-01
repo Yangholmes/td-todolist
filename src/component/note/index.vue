@@ -1,5 +1,6 @@
 <template>
 <div class="note-daily">
+  <board></board>
   <div style="text-align:center;color: #adadad;font-size: .8em; height: 2em; line-height: 2em;">
     <span @click="loadMore()">点击加载</span></div>
   <history  v-for="(item,index) in historys" :key="index" :history="item"></history>
@@ -10,6 +11,7 @@
 <script>
 import daily from '../modules/daily.vue'
 import history from '../modules/history.vue'
+import board from '../modules/board.vue'
 
 export default {
     data() {
@@ -20,7 +22,8 @@ export default {
     },
     components: { // 注册组件，这很重要
         daily, // 相当于 entry: entry
-        history
+        history,
+        board
     },
     methods:{
       submit:function(param){
