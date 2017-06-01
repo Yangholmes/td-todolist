@@ -120,6 +120,7 @@ export default {
                   checkList: this.checkList,
                   dailys: this.dailys
               };
+              this.$emit('dailySubmit',param);
                 this.$message.success('添加日志成功！');
                 this.dailys = [];
             } else {

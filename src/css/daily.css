@@ -51,3 +51,7 @@
 .daily .text-right {
     text-align: right;
 }
+
+.daily .el-form-item__content{
+  width: 100%;
+}
