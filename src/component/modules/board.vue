@@ -146,7 +146,7 @@ export default {
 }
 .board-content{
   background-color: white;
-  height: auto; width: calc( 100% - 2em );
+  height: auto; width: 100%;
   margin: 0 auto;
 
   /*border: 1px solid hsla(0,0%,59%,.9);*/

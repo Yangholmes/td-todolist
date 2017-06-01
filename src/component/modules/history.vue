@@ -22,22 +22,11 @@
 export default {
     name: 'history',
     props: ['history'],
-    created: function() {
-        // `this` 指向 vm 实例
-        if (this.history) {
-            this.dailys = this.history.dailys ? this.history.dailys : [];
-            this.date = this.history.date ? this.history.date : '';
-            this.checkList = this.history.checkList ? this.history.checkList : '';
-        } else {
-            console.log("error");
-
-        }
-    },
     data() {
         return {
-            date: '',
-            checkList: [],
-            dailys: []
+            date: this.history.date ? this.history.date : '',
+            checkList: this.history.checkList ? this.history.checkList : '',
+            dailys: this.history.dailys ? this.history.dailys : [],
         };
     }
 }
