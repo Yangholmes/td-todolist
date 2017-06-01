@@ -5,6 +5,7 @@ import Yang from 'yangjs'
 
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
+
 import './css/daily.css'
 import App from './App.vue'
 
