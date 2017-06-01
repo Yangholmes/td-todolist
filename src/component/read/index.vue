@@ -36,7 +36,7 @@ export default {
     loadMore:function(){
       let array=[{
           id:'1',
-          date: '2017/5/5',
+          date: '2017/5/7',
           checkList: ['本地'],
           dailys: [{
               content: '11111',
@@ -62,7 +62,7 @@ export default {
       },
       {
           id:'3',
-          date: '2017/5/7',
+          date: '2017/5/5',
           checkList: ['本地','加班'],
           dailys: [{
               content: '11111',

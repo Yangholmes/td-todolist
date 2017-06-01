@@ -1,10 +1,10 @@
 <template>
 <div class="note-daily">
   <board class="board"></board>
-  <daily v-on:dailySubmit="submit"></daily>
-  <history  v-for="(item,index) in historys" :key="index" :history="item"></history>
   <div style="text-align:center;color: #adadad;font-size: .8em; height: 2em; line-height: 2em;">
-    <span @click="loadMore()">加载历史</span></div>
+    <span @click="loadMore">加载历史</span></div>
+  <history  v-for="(item,index) in historys" :key="index" :history="item"></history>
+  <daily v-on:dailySubmit="submit"></daily>
 </div>
 </template>
 
@@ -27,7 +27,7 @@ export default {
     },
     methods:{
       submit:function(param){
-        console.log(param);
+        //this.historys.splice(0,0,param);
         this.historys.push(param);
       },
       loadMore:function(){
@@ -77,6 +77,7 @@ export default {
         }
       }
     }
+
 }
 </script>
 
@@ -84,8 +85,5 @@ export default {
 .note-daily {
     padding: 1.5em;
     background-color: #EBEBEB;
-}
-.board{
-  margin-bottom: 1.5em;
 }
 </style>
