@@ -1,36 +1,38 @@
 <template>
   <div class="board">
-    <div class="board-head">
-      <h1>今年任务</h1>
-      <div class="task-add el-icon-plus" @touchend.stop.prevent="openCreateTask"></div>
-    </div>
-    <ul>
-      <li v-for="task in tasks">
-        <div class="task" @touchend="operate(task)">
-          <div class="content">
-            <h2 class="task-name">{{task.taskName}}</h2>
-            <div class="task-info">
-              <p class="create-date">创建日期：<span>{{task.createDate}}</span></p>
-              <p class="schedule-date">计划日期：<span>{{task.scheduleDate}}</span></p>
-              <div class="rate" v-if="task.finishDate">
-                <el-rate v-model="task.rate" :colors="['#99A9BF', '#F7BA2A', '#FF9900']">
-                </el-rate>
+    <div class="board-content">
+      <div class="board-head">
+        <h1>今年任务</h1>
+        <div class="task-add el-icon-plus" @touchend.stop.prevent="openCreateTask"></div>
+      </div>
+      <ul>
+        <li v-for="task in tasks">
+          <div class="task" @touchend="operate(task)">
+            <div class="content">
+              <h2 class="task-name">{{task.taskName}}</h2>
+              <div class="task-info">
+                <p class="create-date">创建日期：<span>{{task.createDate}}</span></p>
+                <p class="schedule-date">计划日期：<span>{{task.scheduleDate}}</span></p>
+                <div class="rate" v-if="task.finishDate">
+                  <el-rate v-model="task.rate" :colors="['#99A9BF', '#F7BA2A', '#FF9900']">
+                  </el-rate>
+                </div>
               </div>
             </div>
+            <img src="../../assets/finish.png" v-if="task.finishDate" class="finish-badge">
+            <div class="finish-date">{{task.finishDate}}</div>
           </div>
-          <img src="../../assets/finish.png" v-if="task.finishDate" class="finish-badge">
-          <div class="finish-date">{{task.finishDate}}</div>
-        </div>
-        <transition name="toggle">
-          <div class="toolbar" v-if="task.operate && !task.finishDate">
-            <div class="toolbar-button toolbar-check" @touchend="finishTask(task)">完成</div>
-            <div class="toolbar-button toolbar-edit" @touchend="openUpdateTask(task)">修改</div>
-            <div class="toolbar-button toolbar-delete" @touchend="deleteTask(task)">删除</div>
-            <div class="toolbar-button toolbar-close" @touchend="cancelTask(task)">取消</div>
-          </div>
-        </transition>
-      </li>
-    </ul>
+          <transition name="toggle">
+            <div class="toolbar" v-if="task.operate && !task.finishDate">
+              <div class="toolbar-button toolbar-check" @touchend="finishTask(task)">完成</div>
+              <div class="toolbar-button toolbar-edit" @touchend="openUpdateTask(task)">修改</div>
+              <div class="toolbar-button toolbar-delete" @touchend="deleteTask(task)">删除</div>
+              <div class="toolbar-button toolbar-close" @touchend="cancelTask(task)">取消</div>
+            </div>
+          </transition>
+        </li>
+      </ul>
+    </div>
 
     <task-popup :task="task" :tasks="tasks" :taskPopupShow="taskPopupShow" @createTask="createTask" @updateTask="updateTask" @closeTaskDialog="closeTaskDialog"></task-popup id="task-popup">
   </div>
@@ -115,6 +117,9 @@ export default {
 
 <style>
 .board{
+  width: 100%; height: 100%;
+}
+.board-content{
   background-color: white;
   height: auto; width: calc( 100% - 2em );
   margin: 0 auto;
