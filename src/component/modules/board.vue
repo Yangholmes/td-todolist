@@ -206,6 +206,7 @@ export default {
   align-items: center;
 }
 .board ul li .task h2.task-name{
+  max-width: 12em;
   font-size: 1.25em;
   font-weight: normal;
 }
@@ -217,10 +218,11 @@ export default {
   display: inline-block;
 }
 .board ul li .task .finish-date{
+  text-align: center;
   font-size: 1em;
   width: 3em; height: 3em;
   line-height: 3em;
-  color: rgba(100, 100, 100, .7);
+  color: rgba(150, 150, 150, 1);
 }
 .badge{
   position: absolute;
