@@ -1,10 +1,10 @@
 <template>
 <div class="note-daily">
-  <board></board>
-  <div style="text-align:center;color: #adadad;font-size: .8em; height: 2em; line-height: 2em;">
-    <span @click="loadMore()">点击加载</span></div>
-  <history  v-for="(item,index) in historys" :key="index" :history="item"></history>
+  <board class="board"></board>
   <daily v-on:dailySubmit="submit"></daily>
+  <history  v-for="(item,index) in historys" :key="index" :history="item"></history>
+  <div style="text-align:center;color: #adadad;font-size: .8em; height: 2em; line-height: 2em;">
+    <span @click="loadMore()">加载历史</span></div>
 </div>
 </template>
 
@@ -31,7 +31,7 @@ export default {
         this.historys.push(param);
       },
       loadMore:function(){
-        this.historys=[{
+        let array=[{
             id:'1',
             date: '2017/5/5',
             checkList: ['本地'],
@@ -70,7 +70,11 @@ export default {
                 status: 0
             }]
           }
-        ]
+        ];
+        for(var i=0; i < array.length; i++){
+          console.log(i);
+          this.historys.push(array[i]);
+        }
       }
     }
 }
@@ -80,5 +84,8 @@ export default {
 .note-daily {
     padding: 1.5em;
     background-color: #EBEBEB;
+}
+.board{
+  margin-bottom: 1.5em;
 }
 </style>

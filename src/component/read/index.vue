@@ -1,6 +1,6 @@
 <template>
   <div class="read">
-    <board id="board"></board>
+    <board class="board"></board>
     <history  v-for="(item,index) in historys" :key="index" :history="item"></history>
     <div style="text-align:center;color: #adadad;font-size: .8em; height: 2em; line-height: 2em;">
       <span @click="loadMore()">点击加载</span></div>
@@ -88,7 +88,7 @@ export default {
     padding: 1.5em;
     background-color: #EBEBEB;
 }
-#board{
+.board{
   margin-bottom: 1.5em;
 }
 </style>
