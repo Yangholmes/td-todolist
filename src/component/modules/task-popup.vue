@@ -1,24 +1,24 @@
 <template>
   <div id="task-popup" :class="{'task-popup': !taskPopupShow}">
     <header class="">
-      {{ title }}
+      <h1>{{ title }}</h1>
     </header>
 
     <div class="task-popup-content">
       <div class="input-field text-field">
         <label class="input-field-label">任务名称:</label>
-        <input type="text" placeholder="请输入任务名称" :value="task.taskName">
+        <input type="text" placeholder="请输入任务名称" v-model="thisTask.taskName">
       </div>
       <div class="input-field date-field">
         <div class="open-date-picker" @touchend="openDatePicker"></div>
         <label class="input-field-label">预计完成:</label>
-        <input type="text" placeholder="点击选择日期">
+        <input type="text" placeholder="点击选择日期" v-model="thisTask.scheduleDate">
       </div>
     </div>
 
     <footer class="">
-      <div class="button button-cancel" @touchend="">取消</div>
-      <div class="button button-confirm" @touchend="">确定</div>
+      <div class="button button-cancel" @touchend="cancel">取消</div>
+      <div class="button button-confirm" @touchend="confirm">确定</div>
     </footer>
 
     <!-- <div class="date-time-picker">
@@ -38,12 +38,54 @@ export default {
   props: ['task', 'tasks', 'taskPopupShow'],
   data () {
     return {
-      title: '新建',
+      // thisTask: {
+        // id: this.task.id,
+        // taskName: this.task.taskName,
+        // scheduleDate: this.task.scheduleDate
+      // },
+      // title: '新建'
+    }
+  },
+  computed: {
+    title () {
+      return this.task.id ? '修改' : '新建';
+    },
+    thisTask (){
+      let task = {};
+      for( let p in this.task ){
+        if(typeof this.task[p] !== 'function')
+        task[p] = this.task[p];
+      }
+      return task;
     }
   },
   methods: {
     openDatePicker () {
-      console.log('hhh');
+      // 引入钉钉后可用
+      // dd.biz.util.datetimepicker({
+      //   format: 'yyyy-MM-dd',
+      //   value: '', //默认显示
+      //   onSuccess : function(result) {
+      //     result.value
+      //   },
+      //   onFail : function() {
+      //
+      //   }
+      // });
+    },
+    cancel () {
+      this.$emit('closeTaskDialog');
+    },
+    confirm () {
+      if( this.thisTask.id ){
+        this.$emit( 'updateTask', this.thisTask );
+        this.$emit('closeTaskDialog');
+      }
+      else{
+        this.thisTask.createDate = new Date();
+        this.$emit( 'createTask', this.thisTask );
+        this.$emit('closeTaskDialog');
+      }
     }
   }
 }
@@ -52,22 +94,27 @@ export default {
 <style>
 #task-popup{
   position: absolute;
-  width: calc( 100% - 2em ); height: auto;
-  left: 1em;
-  background: white;
+  width: 100%; height: 100%;
+  left: 0; top: 0;
+  background: rgba(255, 255, 255, 1);
   /*padding: .5em 1em;*/
+  border-radius: 10px;
+  box-shadow: 1px 0 5px hsla(0,0%,59%,.9);
 }
 .task-popup{
   display: none;
 }
+#task-popup > * {
+  margin: 0 1em;
+}
 
-header{
-  margin: .5rem 1rem;
+header h1{
+  margin: .5em 0;
   font-size: 1.5em;
 }
 
 .task-popup-content{
-  margin: 0 1em;
+
 }
 .input-field{
   margin: .5em auto;
@@ -90,7 +137,6 @@ header{
 footer{
   display: flex;
   justify-content: flex-end;
-    margin: 0 1em;
 }
 .button{
   /*color: white;*/
