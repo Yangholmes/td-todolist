@@ -19,36 +19,46 @@
                 </div>
               </div>
             </div>
-            <img src="../../assets/finish.png" v-if="task.finishDate" class="finish-badge">
+            <img src="../../assets/finish.png" v-if="task.status==1" class="badge finish-badge">
+            <img src="../../assets/cancel.png" v-if="task.status==3" class="badge cancel-badge">
             <div class="finish-date">{{task.finishDate}}</div>
           </div>
           <transition name="toggle">
-            <div class="toolbar" v-if="task.operate && !task.finishDate">
-              <div class="toolbar-button toolbar-check" @touchend="finishTask(task)">完成</div>
+            <div class="toolbar" v-if="task.operate && task.status==0">
               <div class="toolbar-button toolbar-edit" @touchend="openUpdateTask(task)">修改</div>
               <div class="toolbar-button toolbar-delete" @touchend="deleteTask(task)">删除</div>
               <div class="toolbar-button toolbar-close" @touchend="cancelTask(task)">取消</div>
+                <div class="toolbar-button toolbar-check" @touchend="finishTask(task)">完成</div>
             </div>
           </transition>
         </li>
       </ul>
     </div>
 
-    <task-popup :task="task" :tasks="tasks" :taskPopupShow="taskPopupShow" @createTask="createTask" @updateTask="updateTask" @closeTaskDialog="closeTaskDialog"></task-popup id="task-popup">
+    <task-popup :task="task" :tasks="tasks" :taskPopupShow="taskPopupShow" @createTask="createTask" @updateTask="updateTask" @closeTaskDialog="closeTaskDialog"  v-if="taskPopupShow" ></task-popup>
   </div>
 </template>
 
 <script>
-import taskPopup from './task-popup.vue'
+// import taskPopup from './task-popup.vue'
 export default {
   name: 'board',
   components: {
-    taskPopup
+    taskPopup: (resolve) => require(['./task-popup.vue'], resolve)
   },
   data() {
       return {
         taskPopupShow: false,
-        task: { taskName: null, scheduleDate: null },
+        task: {
+          id: null,
+          taskName: null,
+          createDate: null,
+          scheduleDate: null,
+          finishDate: null,
+          rate: null,
+          operate: null,
+          status: 0
+        },
         tasks: [{
           id: 1,
           taskName: '营业额突破2亿美金',
@@ -57,6 +67,7 @@ export default {
           finishDate: '05/31',
           rate: 0,
           operate: false,
+          status: 1
         },{
           id: 2,
           taskName: '利润1亿美金',
@@ -65,14 +76,16 @@ export default {
           finishDate: '',
           rate: 0,
           operate: false,
+          status: 0
         },{
           id: 3,
           taskName: '新开发10个客户',
           createDate: '01/10',
           scheduleDate: '2017/05/31',
-          finishDate: null,
+          finishDate: '',
           rate: 0,
           operate: false,
+          status: 0
         }]
       }
     },
@@ -89,23 +102,35 @@ export default {
       this.task = task;
       this.taskPopupShow = true;
     },
-    createTask () {
-      console.log('create~');
+    createTask (task) {
+      console.log(task);
+      this.tasks.push(task);
     },
     finishTask (task) {
-      console.log('finish');
+      task.operate = false;
+      task.finishDate = new Date().getMonth() + '/' + new Date().getDay();
+      task.status = 1;
     },
     retrieveTask (task) {
       console.log('retrieve');
     },
     updateTask (task) {
-      console.log('update');
+      for(let i=0;i<this.tasks.length;i++){
+        if( this.tasks[i].id == task.id ){
+          for( let p in this.tasks[i] ){
+            if(typeof this.tasks[i][p] !== 'function')
+            this.tasks[i][p] = task[p];
+          }
+        }
+          // this.tasks[i] = task;
+      }
     },
     deleteTask (task) {
       console.log('delete');
     },
     cancelTask (task) {
-      console.log('cancel');
+      task.operate = false;
+      task.status = 3;
     },
     closeTaskDialog () {
       this.taskPopupShow = false;
@@ -197,7 +222,7 @@ export default {
   line-height: 3em;
   color: rgba(100, 100, 100, .7);
 }
-.finish-badge{
+.badge{
   position: absolute;
   right: .5em;
   width: 3em; height: 3em;
