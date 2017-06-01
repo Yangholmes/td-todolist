@@ -94,8 +94,8 @@ export default {
 <style>
 #task-popup{
   position: absolute;
-  width: 100%; height: 100%;
-  left: 0; top: 0;
+  width: calc( 100% - 1em ); height: calc( 100% - 1em );
+  left: .5em; top: .5em;
   background: rgba(255, 255, 255, 1);
   /*padding: .5em 1em;*/
   border-radius: 10px;
