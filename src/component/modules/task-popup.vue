@@ -1,6 +1,6 @@
 <template>
   <div id="task-popup" :class="{'task-popup': !taskPopupShow}">
-    <header class="">
+    <header class="task-popup-header">
       <h1>{{ title }}</h1>
     </header>
 
@@ -16,7 +16,7 @@
       </div>
     </div>
 
-    <footer class="">
+    <footer class="task-popup-footer">
       <div class="button button-cancel" @touchend="cancel">取消</div>
       <div class="button button-confirm" @touchend="confirm">确定</div>
     </footer>
@@ -109,7 +109,7 @@ export default {
   margin: 0 1em;
 }
 
-header h1{
+header.task-popup-header h1{
   margin: .5em 0;
   font-size: 1.5em;
 }
@@ -135,7 +135,7 @@ header h1{
   background: rgba(100, 100, 100, .5);
 }
 
-footer{
+footer.task-popup-footer{
   display: flex;
   justify-content: flex-end;
 }

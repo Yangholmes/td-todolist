@@ -3,17 +3,17 @@
     <div class="board-content">
       <div class="board-head">
         <h1>今年任务</h1>
-        <div class="task-add el-icon-plus" @touchend.stop.prevent="openCreateTask"></div>
+        <div class="task-add el-icon-plus" @touchend.stop.prevent="openCreateTask" v-if="operate"></div>
       </div>
       <ul>
         <li v-for="task in tasks">
-          <div class="task" @touchend="operate(task)">
+          <div class="task" @touchend="showToolbar(task)">
             <div class="content">
               <h2 class="task-name">{{task.taskName}}</h2>
               <div class="task-info">
                 <p class="create-date">创建日期：<span>{{task.createDate}}</span></p>
                 <p class="schedule-date">计划日期：<span>{{task.scheduleDate}}</span></p>
-                <div class="rate" v-if="task.finishDate">
+                <div class="rate" v-if="task.status == 1">
                   <el-rate v-model="task.rate" :colors="['#99A9BF', '#F7BA2A', '#FF9900']">
                   </el-rate>
                 </div>
@@ -24,7 +24,7 @@
             <div class="finish-date">{{task.finishDate}}</div>
           </div>
           <transition name="toggle">
-            <div class="toolbar" v-if="task.operate && task.status==0">
+            <div class="toolbar" v-if="operate && task.toolbar && task.status==0" @touchend="showToolbar(task)">
               <div class="toolbar-button toolbar-edit" @touchend="openUpdateTask(task)">修改</div>
               <div class="toolbar-button toolbar-delete" @touchend="deleteTask(task)">删除</div>
               <div class="toolbar-button toolbar-close" @touchend="cancelTask(task)">取消</div>
@@ -46,6 +46,7 @@ export default {
   components: {
     taskPopup: (resolve) => require(['./task-popup.vue'], resolve)
   },
+  props: ['operate'],
   data() {
       return {
         taskPopupShow: false,
@@ -56,7 +57,7 @@ export default {
           scheduleDate: null,
           finishDate: null,
           rate: null,
-          operate: null,
+          toolbar: false,
           status: 0
         },
         tasks: [{
@@ -66,17 +67,17 @@ export default {
           scheduleDate: '2017/05/31',
           finishDate: '05/31',
           rate: 0,
-          operate: false,
+          toolbar: false,
           status: 1
         },{
           id: 2,
           taskName: '利润1亿美金',
           createDate: '2017/01/10',
           scheduleDate: '2017/05/31',
-          finishDate: '',
+          finishDate: '06/05',
           rate: 0,
-          operate: false,
-          status: 0
+          toolbar: false,
+          status: 3
         },{
           id: 3,
           taskName: '新开发10个客户',
@@ -84,7 +85,7 @@ export default {
           scheduleDate: '2017/05/31',
           finishDate: '',
           rate: 0,
-          operate: false,
+          toolbar: false,
           status: 0
         }]
       }
@@ -92,8 +93,8 @@ export default {
   methods: {
     rate (task, e) {
     },
-    operate (task) {
-      task.operate = !task.operate
+    showToolbar (task) {
+      task.toolbar = !task.toolbar;
     },
     openCreateTask () {
       this.taskPopupShow = true;
@@ -107,7 +108,6 @@ export default {
       this.tasks.push(task);
     },
     finishTask (task) {
-      task.operate = false;
       task.finishDate = new Date().getMonth() + '/' + new Date().getDay();
       task.status = 1;
     },
@@ -129,7 +129,6 @@ export default {
       console.log('delete');
     },
     cancelTask (task) {
-      task.operate = false;
       task.status = 3;
     },
     closeTaskDialog () {
@@ -149,10 +148,10 @@ export default {
   height: auto; width: 100%;
   margin: 0 auto;
 
-  /*border: 1px solid hsla(0,0%,59%,.9);*/
+  border: 1px solid #d1dbe5;
   border-radius: 5px;
 
-  box-shadow: 1px 0 5px hsla(0,0%,59%,.9);
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,.12), 0 0 6px 0 rgba(0,0,0,.04);
 
   position: relative;
 }
@@ -161,7 +160,7 @@ export default {
   width: 100%;
   text-align: center;
 
-  border-bottom: 1px solid hsla(0,0%,59%,.9);
+  border-bottom: 1px solid #d1dbe5;
   /*border: 1px solid black;
   border-bottom: none;
   border-radius: 5px 5px 0 0;*/
@@ -194,7 +193,7 @@ export default {
   border-radius: 0 0 3px 5px;*/
 }
 .board ul li{
-  border-bottom: 1px solid hsla(0,0%,59%,.9);
+  border-bottom: 1px solid #d1dbe5;
   padding: .5em .5em;
 }
 .board ul li:last-child{
@@ -222,7 +221,7 @@ export default {
   font-size: 1em;
   width: 3em; height: 3em;
   line-height: 3em;
-  color: rgba(150, 150, 150, 1);
+  color: rgba(120, 120, 120, 1);
 }
 .badge{
   position: absolute;

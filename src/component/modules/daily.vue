@@ -3,7 +3,7 @@
     <el-card class="box-card">
         <div slot="header" class="clearfix">
             <span style="line-height: 36px;">{{date}} 工作日志</span>
-            <el-button type="primary" class="btn-add" @click="openDial()"><i class="el-icon-plus"></i></el-button>
+            <el-button type="primary" class="btn-add el-icon-plus" @click="openDial()"></el-button>
         </div>
         <el-checkbox-group v-model="checkList">
             <el-checkbox label="本地"></el-checkbox>
