@@ -48,7 +48,7 @@ export default {
     loadMore:function(){
       let array=[{
           id:'1',
-          date: '2017/5/5',
+          date: '2017/5/7',
           checkList: ['本地'],
           dailys: [{
               content: '11111',
@@ -74,7 +74,7 @@ export default {
       },
       {
           id:'3',
-          date: '2017/5/7',
+          date: '2017/5/5',
           checkList: ['本地','加班'],
           dailys: [{
               content: '11111',
@@ -106,6 +106,7 @@ export default {
     padding: 2.5em 1em 1em 1em;
     background-color: #EBEBEB;
 }
+<<<<<<< HEAD
 header.read-component-header {
     z-index: 999;
     position: fixed;
@@ -144,5 +145,9 @@ hr{
   width: 100%;
   height: 1px;
   background: rgba(120, 120, 120, 0.4);
+=======
+.board{
+  margin-bottom: 1.5em;
+>>>>>>> refs/remotes/origin/master
 }
 </style>

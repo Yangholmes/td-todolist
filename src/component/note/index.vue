@@ -1,9 +1,13 @@
 <template>
 <div class="note-daily">
+<<<<<<< HEAD
   <board  :operate="true"></board>
   <hr>
+=======
+  <board class="board"></board>
+>>>>>>> refs/remotes/origin/master
   <div style="text-align:center;color: #adadad;font-size: .8em; height: 2em; line-height: 2em;">
-    <span @click="loadMore()">点击加载</span></div>
+    <span @click="loadMore">加载历史</span></div>
   <history  v-for="(item,index) in historys" :key="index" :history="item"></history>
   <daily v-on:dailySubmit="submit"></daily>
 </div>
@@ -28,11 +32,11 @@ export default {
     },
     methods:{
       submit:function(param){
-        console.log(param);
+        //this.historys.splice(0,0,param);
         this.historys.push(param);
       },
       loadMore:function(){
-        this.historys=[{
+        let array=[{
             id:'1',
             date: '2017/5/5',
             checkList: ['本地'],
@@ -71,9 +75,14 @@ export default {
                 status: 0
             }]
           }
-        ]
+        ];
+        for(var i=0; i < array.length; i++){
+          console.log(i);
+          this.historys.push(array[i]);
+        }
       }
     }
+
 }
 </script>
 
