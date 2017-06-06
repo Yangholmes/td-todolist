@@ -1,9 +1,9 @@
 <template>
   <div class="read">
-
     <header class="read-component-header">
-      <span @touchend="watchSelf">看自己</span>
-      <span @touchend="watchOther">看别人</span>
+      <span @touchend.prevent="watchSelf">看自己</span>
+      <span @touchend.prevent="watchOther">看别人</span>
+
     </header>
 
     <!-- 看板 -->
@@ -14,7 +14,6 @@
     <div style="text-align:center;color: #adadad;font-size: .8em; height: 2em; line-height: 2em; margin: 1em auto">
       <span @click="loadMore">点击加载</span>
     </div>
-
   </div>
 </template>
 
@@ -36,7 +35,9 @@ export default {
               content: '2222',
               status: 0
           }]
-      }]
+      }],
+      watchOtherDialogVisible: false,
+      other: {}
     }
   },
   components: {
@@ -94,8 +95,8 @@ export default {
 
     },
     watchOther () {
-      
-    }
+      this.watchOtherDialogVisible = !this.watchOtherDialogVisible;
+    },
   }
 }
 </script>
