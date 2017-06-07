@@ -95,7 +95,7 @@ export default {
   left: .5em; top: 20%;
   background: rgba(255, 255, 255, 1);
   /*padding: .5em 1em;*/
-  border-radius: 10px;
+  border-radius: 3px;
   box-shadow: 1px 0 5px hsla(0,0%,59%,.9);
 }
 .task-popup{
