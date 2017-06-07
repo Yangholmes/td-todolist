@@ -1,11 +1,9 @@
 <template>
 <div class="note-daily">
-<<<<<<< HEAD
+
   <board  :operate="true"></board>
   <hr>
-=======
-  <board class="board"></board>
->>>>>>> refs/remotes/origin/master
+
   <div style="text-align:center;color: #adadad;font-size: .8em; height: 2em; line-height: 2em;">
     <span @click="loadMore">加载历史</span></div>
   <history  v-for="(item,index) in historys" :key="index" :history="item"></history>

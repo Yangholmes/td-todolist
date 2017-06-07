@@ -2,8 +2,8 @@
   <div class="read">
     <header class="read-component-header">
       <span @touchend.prevent="watchSelf">看自己</span>
-      <span @touchend.prevent="watchOther">看别人</span>
-
+      <span @touchend.prevent="popupWatchOther">看别人</span>
+      <watch-other-popup v-if="watchOtherPopupVisible" @watchOther="watchOther"></watch-other-popup>
     </header>
 
     <!-- 看板 -->
@@ -20,6 +20,7 @@
 <script>
 import board from '../modules/board.vue'
 import history from '../modules/history.vue'
+import watchOtherPopup from '../modules/watch-other-popup.vue'
 export default {
   data () {
     return {
@@ -36,13 +37,13 @@ export default {
               status: 0
           }]
       }],
-      watchOtherDialogVisible: false,
-      other: {}
+      watchOtherPopupVisible: false,
     }
   },
   components: {
     history,
-    board
+    board,
+    watchOtherPopup
   },
   methods:{
     loadMore:function(){
@@ -94,9 +95,13 @@ export default {
     watchSelf () {
 
     },
-    watchOther () {
-      this.watchOtherDialogVisible = !this.watchOtherDialogVisible;
+    popupWatchOther () {
+      this.watchOtherPopupVisible = !this.watchOtherPopupVisible;
     },
+    watchOther (other) {
+      this.watchOtherPopupVisible = false;
+      console.log(other);
+    }
   }
 }
 </script>
@@ -106,7 +111,7 @@ export default {
     padding: 2.5em 1em 1em 1em;
     background-color: #EBEBEB;
 }
-<<<<<<< HEAD
+
 header.read-component-header {
     z-index: 999;
     position: fixed;
@@ -145,9 +150,5 @@ hr{
   width: 100%;
   height: 1px;
   background: rgba(120, 120, 120, 0.4);
-=======
-.board{
-  margin-bottom: 1.5em;
->>>>>>> refs/remotes/origin/master
 }
 </style>
