@@ -51,7 +51,7 @@ export default {
     created: function() {
         // `this` 指向 vm 实例
         let currentDate = new Date();
-        this.date = currentDate.toLocaleDateString();
+        this.date = currentDate.getFullYear()+'/'+(currentDate.getMonth()+1)+'/'+currentDate.getDate();
     },
     data() {
         return {
