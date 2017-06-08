@@ -1,35 +1,30 @@
 <template>
-  <div id="task-popup" :class="{'task-popup': !taskPopupShow}">
-    <header class="">
-      <h1>{{ title }}</h1>
-    </header>
+  <div :class="{'task-popup': !taskPopupShow}">
+    <div class="task-popup-main">
+      <header class="task-popup-header">
+        <h1>{{ title }}</h1>
+      </header>
 
-    <div class="task-popup-content">
-      <div class="input-field text-field">
-        <label class="input-field-label">任务名称:</label>
-        <input type="text" placeholder="请输入任务名称" v-model="thisTask.taskName">
+      <div class="task-popup-content">
+        <div class="input-field text-field">
+          <label class="input-field-label">任务名称:</label>
+          <input type="text" placeholder="请输入任务名称" v-model="thisTask.taskName">
+        </div>
+        <div class="input-field date-field">
+          <div class="open-date-picker" @touchend="openDatePicker"></div>
+          <label class="input-field-label">预计完成:</label>
+          <input type="text" placeholder="点击选择日期" v-model="thisTask.scheduleDate">
+        </div>
       </div>
-      <div class="input-field date-field">
-        <div class="open-date-picker" @touchend="openDatePicker"></div>
-        <label class="input-field-label">预计完成:</label>
-        <input type="text" placeholder="点击选择日期" v-model="thisTask.scheduleDate">
-      </div>
+
+      <footer class="task-popup-footer">
+        <div class="button button-cancel" @touchend="cancel">取消</div>
+        <div class="button button-confirm" @touchend="confirm">确定</div>
+      </footer>
+
     </div>
 
-    <footer class="">
-      <div class="button button-cancel" @touchend="cancel">取消</div>
-      <div class="button button-confirm" @touchend="confirm">确定</div>
-    </footer>
-
-    <!-- <div class="date-time-picker">
-      <div class="date-time-picker-toolbar">
-        <span class="date-time-picker-toolbar-cancel">取消</span>
-        <span class="date-time-picker-toolbar-confirm">确定</span>
-      </div>
-      <div class="date-time-picker-items">
-      </div>
-    </div> -->
-
+    <div class="task-popup-mask mask" @touchend="cancel"></div>
   </div>
 </template>
 
@@ -92,25 +87,27 @@ export default {
 </script>
 
 <style>
-#task-popup{
-  position: absolute;
-  width: 100%; height: 100%;
-  left: 0; top: 0;
+.task-popup-main{
+  position: fixed;
+  z-index: 9999;
+  width: calc( 100% - 1em );
+  /*height: calc( 100% - 1em );*/
+  left: .5em; top: 20%;
   background: rgba(255, 255, 255, 1);
   /*padding: .5em 1em;*/
-  border-radius: 10px;
+  border-radius: 3px;
   box-shadow: 1px 0 5px hsla(0,0%,59%,.9);
 }
 .task-popup{
   display: none;
 }
-#task-popup > * {
+.task-popup-main > * {
   margin: 0 1em;
 }
 
-header h1{
+header.task-popup-header h1{
   margin: .5em 0;
-  font-size: 1.5em;
+  font-size: 1.25em;
 }
 
 .task-popup-content{
@@ -134,7 +131,7 @@ header h1{
   background: rgba(100, 100, 100, .5);
 }
 
-footer{
+footer.task-popup-footer{
   display: flex;
   justify-content: flex-end;
 }
@@ -154,5 +151,14 @@ footer{
 }
 .button-confirm{
   background: #5cabff;
+}
+
+.task-popup-mask {
+  display: block;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(100, 100, 100, .7);
+  z-index: 998;
 }
 </style>

@@ -1,15 +1,26 @@
 <template>
   <div class="read">
-    <board class="board"></board>
+    <header class="read-component-header">
+      <span @touchend.prevent="watchSelf">看自己</span>
+      <span @touchend.prevent="popupWatchOther">看别人</span>
+      <watch-other-popup v-if="watchOtherPopupVisible" @watchOther="watchOther"></watch-other-popup>
+    </header>
+
+    <!-- 看板 -->
+    <board id="board" :operate="false"></board>
+    <hr>
+    <!-- 日志 -->
     <history  v-for="(item,index) in historys" :key="index" :history="item"></history>
-    <div style="text-align:center;color: #adadad;font-size: .8em; height: 2em; line-height: 2em;">
-      <span @click="loadMore()">点击加载</span></div>
+    <div style="text-align:center;color: #adadad;font-size: .8em; height: 2em; line-height: 2em; margin: 1em auto">
+      <span @click="loadMore">点击加载</span>
+    </div>
   </div>
 </template>
 
 <script>
 import board from '../modules/board.vue'
 import history from '../modules/history.vue'
+import watchOtherPopup from '../modules/watch-other-popup.vue'
 export default {
   data () {
     return {
@@ -25,12 +36,14 @@ export default {
               content: '2222',
               status: 0
           }]
-      }]
+      }],
+      watchOtherPopupVisible: false,
     }
   },
   components: {
     history,
-    board
+    board,
+    watchOtherPopup
   },
   methods:{
     loadMore:function(){
@@ -78,6 +91,16 @@ export default {
         console.log(i);
         this.historys.push(array[i]);
       }
+    },
+    watchSelf () {
+
+    },
+    popupWatchOther () {
+      this.watchOtherPopupVisible = !this.watchOtherPopupVisible;
+    },
+    watchOther (other) {
+      this.watchOtherPopupVisible = false;
+      console.log(other);
     }
   }
 }
@@ -85,10 +108,47 @@ export default {
 
 <style>
 .read {
-    padding: 1.5em;
+    padding: 2.5em 1em 1em 1em;
     background-color: #EBEBEB;
 }
-.board{
-  margin-bottom: 1.5em;
+
+header.read-component-header {
+    z-index: 999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: space-around;
+    box-sizing: border-box;
+    border-bottom: 1px solid #d1dbe5;
+    background: rgba(255, 255, 255, .9);
+    color: rgba(80, 175, 250, 1);
+    text-align: center;
+}
+header.read-component-header span {
+  display: inline-block;
+  font-size: 1em;
+  line-height: 2em;
+  width: 100%;
+  border-right: 1px solid #d1dbe5;
+}
+header.read-component-header span:last-child {
+  border: none;
+}
+header.read-component-header span:active {
+  background: rgba(220, 220, 220, .9);
+}
+#board{
+  /*margin-bottom: 1.5em;*/
+}
+hr{
+  margin: 1em auto;
+  border: none;
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: rgba(120, 120, 120, 0.4);
 }
 </style>

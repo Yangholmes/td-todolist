@@ -1,6 +1,9 @@
 <template>
 <div class="note-daily">
-  <board class="board"></board>
+
+  <board  :operate="true"></board>
+  <hr>
+
   <div style="text-align:center;color: #adadad;font-size: .8em; height: 2em; line-height: 2em;">
     <span @click="loadMore">加载历史</span></div>
   <history  v-for="(item,index) in historys" :key="index" :history="item"></history>
@@ -85,5 +88,13 @@ export default {
 .note-daily {
     padding: 1.5em;
     background-color: #EBEBEB;
+}
+hr{
+  margin: 1em auto;
+  border: none;
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: rgba(120, 120, 120, 0.4);
 }
 </style>
