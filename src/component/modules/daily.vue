@@ -12,13 +12,24 @@
             <el-checkbox label="出差"></el-checkbox>
         </el-checkbox-group>
         <p v-if="!dailys.length" class="info">请增加工作内容</p>
-        <div v-for="(o,index) in dailys" :key="index" class="text item toggle">
-            <div class="heading">任务{{ index+1 }} <i v-if="o.status" class="el-icon-check"></i><i v-else class="el-icon-more"></i></div>
-            <p class="info">{{o.content}}</p>
-            <div class="text-right toggleContent">
-                <i class="el-icon-edit" @click="dailyEdit(o,index)"></i>
-                <i class="el-icon-delete" style="margin-left:10px;" @click="dailyDelete(index)"></i>
+        <transition-group name="list" tag="div">
+          <div v-for="(o,index) in dailys" :key="index" class="text item toggle">
+              <div class="heading">任务{{ index+1 }} <i v-if="o.status" class="el-icon-check"></i><i v-else class="el-icon-more"></i></div>
+              <p class="info">{{o.content}}</p>
+              <div class="text-right toggleContent">
+                  <i class="el-icon-edit" @click="dailyEdit(o,index)"></i>
+                  <i class="el-icon-delete" style="margin-left:10px;" @click="dailyDelete(index)"></i>
+              </div>
+          </div>
+        </transition-group>
+        <div v-if="dailys.length" class="cc-picker-content">
+          <label>抄送</label>
+          <div class="cc-picker-list">
+            <div  class="cc-picker-item" v-for="(item,index) in ccUsers" @click="deleteCCPicker(index)" :key="index">
+              <el-tag type="primary">{{item.name}}</el-tag>
             </div>
+            <div @click="openCCPicker" class="cc-picker-item"><el-tag type="warning" >添加抄送人</el-tag></div>
+          </div>
         </div>
         <div v-if="dailys.length" class="text-right">
             <el-button @click="dailySubmit('checkForm')">提交</el-button>
@@ -51,7 +62,7 @@ export default {
     created: function() {
         // `this` 指向 vm 实例
         let currentDate = new Date();
-        this.date = currentDate.toLocaleDateString();
+        this.date = currentDate.getFullYear()+'/'+(currentDate.getMonth()+1)+'/'+currentDate.getDate();
     },
     data() {
         return {
@@ -76,7 +87,8 @@ export default {
                     message: '请选择完成情况',
                     trigger: 'change'
                 }]
-            }
+            },
+            ccUsers:[]
         };
     },
     methods: {
@@ -127,6 +139,34 @@ export default {
                 this.$message.error('请选择考勤');
                 return false;
             }
+        },
+        openCCPicker: function(){
+          // 引入钉钉后可用
+          // dd.biz.contact.choose({
+          //      startWithDepartmentId: -1, //-1表示打开的通讯录从自己所在部门开始展示, 0表示从企业最上层开始，(其他数字表示从该部门开始:暂时不支持)
+          //      multiple: false, //是否多选： true多选 false单选； 默认true
+          //      users: null, //默认选中的用户列表，userid；成功回调中应包含该信息
+          //      disabledUsers: null, // 不能选中的用户列表，员工userid
+          //      corpId: window._config.corpId, //企业id
+          //      // max: , //人数限制，当multiple为true才生效，可选范围1-1500
+          //      limitTips: "挑太多啦！", //超过人数限制的提示语可以用这个字段自定义
+          //      isNeedSearch: true, // 是否需要搜索功能
+          //      title: "挑个人呗~", // 如果你需要修改选人页面的title，可以在这里赋值
+          //      local: "false", // 是否显示本地联系人，默认false
+          //      onSuccess: function(data) {
+          //        // todo
+          //        this.ccUsers.push(data);
+          //      },
+          //      onFail: function(err) {
+          //        // todo
+          //        this.$message.error('非常抱歉！您的通信录打不开。。。');
+          //      }
+          // });
+          this.ccUsers.push({id:1, name:"卢威"});
+          console.log(this.ccUsers);
+        },
+        deleteCCPicker: function(index){
+          this.ccUsers.splice(index,1);
         }
     }
 }
@@ -134,4 +174,19 @@ export default {
 <style>
   .toggleContent{display: none;}
   .toggle:hover .toggleContent{display: block;}
+  .daily .cc-picker-item{
+    display: inline-block;
+    margin: 5px 5px 5px 0;
+  }
+  .list-item {
+    display: inline-block;
+    margin-right: 10px;
+  }
+  .list-enter-active, .list-leave-active {
+    transition: all 1s;
+  }
+  .list-enter, .list-leave-active {
+    opacity: 0;
+    transform: translateY(30px);
+  }
 </style>
