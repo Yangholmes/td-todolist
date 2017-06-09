@@ -82,7 +82,7 @@ export default {
         }
         task.user = '03424264076698';
         console.log(task);
-        this.$http.post('http://localhost/dingding/td-todolist/php/task/task-add.php', task,{
+        this.$http.post('http://localhost/dingding/td-todolist/php/task/task-add.php', {task: task}, {
             emulateJSON: true,
             headers: {
                 'Content-Type': 'enctype="application/x-www-form-urlencoded; charset=utf-8"'

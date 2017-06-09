@@ -9,7 +9,7 @@ require_once( __DIR__.'/../../php/lib/yang-lib/yang-class-mysql.php');
 /**
  * recieve POST data
  */
-$task = $_POST;
+$task = $_POST['task'];
 
 // date filter
 
@@ -36,9 +36,9 @@ else{
   $errorMsg = '';
 }
 
-$result = [
+$response = [
   "task"     => $task,
   "error"    => $error,
   "errorMsg" => $errorMsg
 ];
-echo json_encode( $result );
+echo json_encode( $response );
