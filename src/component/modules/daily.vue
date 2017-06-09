@@ -25,6 +25,7 @@
         <div v-if="dailys.length" class="cc-picker-content">
           <label>抄送</label>
           <div class="cc-picker-list">
+            <div  class="cc-picker-item"><el-tag type="primary">陈朝晖</el-tag></div>
             <div  class="cc-picker-item" v-for="(item,index) in ccUsers" @click="deleteCCPicker(index)" :key="index">
               <el-tag type="primary">{{item.name}}</el-tag>
             </div>
