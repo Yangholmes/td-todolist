@@ -17,21 +17,23 @@ $task = $_POST;
  * instance a new yangMysql class
  */
 $taskQuery  = new yangMysql(); //
-$resQuery->selectDb(DB_DATABASE); //
-$resQuery->selectTable("task");
+$taskQuery->selectDb(DB_DATABASE); //
+$taskQuery->selectTable("task");
 
 /**
  * insert new task
  */
-$result = $taskQuery->insert($task);
+$result = $task ? $taskQuery->insert($task) : false; // task can not be null
 
 if(!$result){
   $error = '1';
-  $errorMsg = '新增任务失败'
+  $errorMsg = '新增任务失败';
 }
 else{
   $result =$taskQuery->query('select @@IDENTITY');
-  $task['id'] = $result[0]['@@IDENTITY']
+  $task['id'] = $result[0]['@@IDENTITY'];
+  $error = '0';
+  $errorMsg = '';
 }
 
 $result = [

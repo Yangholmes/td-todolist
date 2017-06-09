@@ -33,12 +33,7 @@ export default {
   props: ['task', 'tasks', 'taskPopupShow'],
   data () {
     return {
-      // thisTask: {
-        // id: this.task.id,
-        // taskName: this.task.taskName,
-        // scheduleDate: this.task.scheduleDate
-      // },
-      // title: '新建'
+
     }
   },
   computed: {
@@ -49,7 +44,7 @@ export default {
       let task = {};
       for( let p in this.task ){
         if(typeof this.task[p] !== 'function')
-        task[p] = this.task[p];
+          task[p] = this.task[p];
       }
       return task;
     }
@@ -77,7 +72,25 @@ export default {
         this.$emit('closeTaskDialog');
       }
       else{
-        this.thisTask.createDate = new Date();
+        const date = new Date();
+        this.thisTask.createDate = date.getFullYear() + '/' + (date.getMonth()+1) + '/' + date.getDate();
+        let task = {};
+        for( let t in this.thisTask ){
+          if( typeof this.thisTask[t] != 'function' && t!='toolbar' )
+            // console.log( this.thisTask[r].toString() );
+            task[t] = this.thisTask[t];
+        }
+        task.user = '03424264076698';
+        console.log(task);
+        this.$http.post('http://localhost/dingding/td-todolist/php/task/task-add.php', task,{
+            emulateJSON: true,
+            headers: {
+                'Content-Type': 'enctype="application/x-www-form-urlencoded; charset=utf-8"'
+            }
+        }).then(function(response){
+          }, function(response){
+            console.log(response);
+          });
         this.$emit( 'createTask', this.thisTask );
         this.$emit('closeTaskDialog');
       }
