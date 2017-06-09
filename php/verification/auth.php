@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * [header description]
+ * @var [type]
+ * 暂时不能用，因为钉钉验证不支持回调
+ */
+
 header("Access-Control-Allow-Origin:*"); // cross domain
 
 require_once(__DIR__.'/../../php/api/Auth.php');

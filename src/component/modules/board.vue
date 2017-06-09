@@ -133,7 +133,7 @@ export default {
     },
     closeTaskDialog () {
       this.taskPopupShow = false;
-      this.task = { taskName: null, scheduleDate: null };
+      this.task.id = null;
     }
   }
 }

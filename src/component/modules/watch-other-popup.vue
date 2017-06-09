@@ -8,7 +8,7 @@
 
       <div class="watch-other-popup-content">
         <div class="input-field colleague-field">
-          <div class="open-colleague-picker picker" @touchend="openDatePicker"></div>
+          <div class="open-colleague-picker picker" @touchend="openColleaguePicker"></div>
           <label class="input-field-label">选择同事</label>
           <input type="text" placeholder="点击选择同事" v-model="user">
         </div>
@@ -40,7 +40,7 @@ export default {
     }
   },
   methods: {
-    openDatePicker (){
+    openColleaguePicker (){
       // 引入钉钉后可用
       // dd.biz.contact.choose({
       //      startWithDepartmentId: -1, //-1表示打开的通讯录从自己所在部门开始展示, 0表示从企业最上层开始，(其他数字表示从该部门开始:暂时不支持)
