@@ -47,6 +47,16 @@ export default {
     taskPopup: (resolve) => require(['./task-popup.vue'], resolve)
   },
   props: ['operate'],
+  mounted () {
+    this.$http.get('http://192.168.4.16/dingding/td-todolist/php/task/task-retrieve.php?user='+'03424264076698').then( (respones)=>{
+      this.tasks = respones.data.tasks.map((task)=>{
+        task.toolbar = false;
+        return task
+      });
+    }, (respones)=>{
+      alert('通信失败');
+    } );
+  },
   data() {
       return {
         taskPopupShow: false,
@@ -58,36 +68,10 @@ export default {
           finishDate: null,
           rate: null,
           toolbar: false,
+          user: "03424264076698",
           status: 0
         },
-        tasks: [{
-          id: 1,
-          taskName: '营业额突破2亿美金',
-          createDate: '2017/01/10',
-          scheduleDate: '2017/05/31',
-          finishDate: '05/31',
-          rate: 0,
-          toolbar: false,
-          status: 1
-        },{
-          id: 2,
-          taskName: '利润1亿美金',
-          createDate: '2017/01/10',
-          scheduleDate: '2017/05/31',
-          finishDate: '06/05',
-          rate: 0,
-          toolbar: false,
-          status: 3
-        },{
-          id: 3,
-          taskName: '新开发10个客户',
-          createDate: '01/10',
-          scheduleDate: '2017/05/31',
-          finishDate: '',
-          rate: 0,
-          toolbar: false,
-          status: 0
-        }]
+        tasks: []
       }
     },
   methods: {
@@ -133,7 +117,17 @@ export default {
     },
     closeTaskDialog () {
       this.taskPopupShow = false;
-      this.task.id = null;
+      this.task = {
+        id: null,
+        taskName: null,
+        createDate: null,
+        scheduleDate: null,
+        finishDate: null,
+        rate: null,
+        toolbar: false,
+        user: "03424264076698",
+        status: 0
+      };
     }
   }
 }

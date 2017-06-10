@@ -81,18 +81,20 @@ export default {
             task[t] = this.thisTask[t];
         }
         task.user = '03424264076698';
-        console.log(task);
-        this.$http.post('http://localhost/dingding/td-todolist/php/task/task-add.php', {task: task}, {
+        // console.log(task);
+        this.$http.post('http://192.168.4.16/dingding/td-todolist/php/task/task-add.php', {task: task}, {
             emulateJSON: true,
             headers: {
                 'Content-Type': 'enctype="application/x-www-form-urlencoded; charset=utf-8"'
             }
-        }).then(function(response){
-          }, function(response){
-            console.log(response);
+        }).then((response)=>{
+          task = response.data.task;
+          task.toolbar = false;
+          this.$emit( 'createTask', task);
+          this.$emit('closeTaskDialog');
+        }, (response)=>{
+            alert('通信失败');
           });
-        this.$emit( 'createTask', this.thisTask );
-        this.$emit('closeTaskDialog');
       }
     }
   }

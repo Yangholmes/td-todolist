@@ -32,4 +32,10 @@ $taskQuery->selectTable("task");
 $condition = "user = $user";
 $tasks = $taskQuery->simpleSelect(null, $condition, ['`createDate`', 'ASC'], null);
 
-echo json_encode($tasks);
+$response = [
+  "tasks"     => $tasks,
+  "error"    => 0,
+  "errorMsg" => ''
+];
+
+echo json_encode($response);
