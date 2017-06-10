@@ -19,12 +19,10 @@ function updateUserInfo ($user) {
   $condition = "emplId='".$user['emplId']."'";
   $userResult = $userQuery->simpleSelect(null, $condition, null, null );
   if(!count($userResult)) {
-    $userQuery->insert($user);
-  }
-  else {
-    $userQuery->update($user, $condition, null, null);
-  }
-
-  return true;
-
+      $insert = $userQuery->insert($user);
+    }
+    else {
+      $insert = $userQuery->update($user, $condition, null, null);
+    }
+    return $insert;
 }

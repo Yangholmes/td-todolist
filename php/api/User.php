@@ -50,6 +50,7 @@ class User{
 
       $user->deviceId = $userInfo->deviceId;
       $user->admin_level = $userInfo->sys_level; //级别，0：非管理员 1：超级管理员（主管理员） 2：普通管理员（子管理员） 100：老板
+      $user->emplId = $user->userid;
       return json_encode( $user );
   }
 

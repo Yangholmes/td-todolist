@@ -1,6 +1,12 @@
 <?php
 
 /**
+ * 新增一条task记录
+ * http方法： POST
+ * 2017/06/09 Yangholmes
+ */
+
+/**
  * require libs
  */
 require_once( __DIR__.'/../../php/config/server-config.php');

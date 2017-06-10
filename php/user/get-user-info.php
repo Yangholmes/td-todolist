@@ -19,4 +19,17 @@ echo $userInfo;
  * update user table
  */
 require_once( './update-user-info.php');
-updateUserInfo($userInfo);
+$userProperties = ['emplId', 'name', 'avatar', 'isAdmin', 'admin_level', 'department', 'mobile'];
+$user = null;
+$userInfo = json_decode($userInfo);
+
+foreach ($userProperties as $value) {
+  if(is_array($userInfo->$value)){
+    $user[$value] = join(',', $userInfo->$value);
+  }
+  else {
+    $user[$value] = $userInfo->$value;
+  }
+}
+
+updateUserInfo($user);
