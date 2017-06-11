@@ -6,7 +6,8 @@
  * _user    √
  * _car     °
  */
-var _user = {}, // user info
+var HOST = 'http://192.168.4.16/dingding/td-todolist',
+    _user = {}, // user info
     _config = _config; // dd config
 
 /**

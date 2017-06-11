@@ -41,11 +41,16 @@ export default {
       return this.task.id ? '修改' : '新建';
     },
     thisTask (){
-      let task = {};
+      let task = {},
+          date = new Date();
+
       for( let p in this.task ){
         if(typeof this.task[p] !== 'function')
           task[p] = this.task[p];
       }
+      if( !this.task.id )
+        task = date.getFullYear() + '/' + (date.getMonth()+1) + '/' + date.getDate();
+
       return task;
     }
   },
@@ -67,35 +72,31 @@ export default {
       this.$emit('closeTaskDialog');
     },
     confirm () {
-      if( this.thisTask.id ){
-        this.$emit( 'updateTask', this.thisTask );
-        this.$emit('closeTaskDialog');
+      this.postDate(!this.thisTask.id);
+    },
+    postDate (method) {
+      let that = this,
+          task = {},
+          url = method ? 'http://192.168.4.16/dingding/td-todolist/php/task/task-add.php' : 'http://192.168.4.16/dingding/td-todolist/php/task/task-update.php';
+      for( let t in this.thisTask ){
+        if( typeof this.thisTask[t] != 'function' && t!='toolbar' )
+          // console.log( this.thisTask[r].toString() );
+          task[t] = this.thisTask[t];
       }
-      else{
-        const date = new Date();
-        this.thisTask.createDate = date.getFullYear() + '/' + (date.getMonth()+1) + '/' + date.getDate();
-        let task = {};
-        for( let t in this.thisTask ){
-          if( typeof this.thisTask[t] != 'function' && t!='toolbar' )
-            // console.log( this.thisTask[r].toString() );
-            task[t] = this.thisTask[t];
-        }
-        task.user = '03424264076698';
-        // console.log(task);
-        this.$http.post('http://192.168.4.16/dingding/td-todolist/php/task/task-add.php', {task: task}, {
-            emulateJSON: true,
-            headers: {
-                'Content-Type': 'enctype="application/x-www-form-urlencoded; charset=utf-8"'
-            }
-        }).then((response)=>{
-          task = response.data.task;
-          task.toolbar = false;
-          this.$emit( 'createTask', task);
-          this.$emit('closeTaskDialog');
-        }, (response)=>{
-            alert('通信失败');
-          });
-      }
+      // console.log(task);
+      this.$http.post(url, {task: task}, {
+          emulateJSON: true,
+          headers: {
+              'Content-Type': 'enctype="application/x-www-form-urlencoded; charset=utf-8"'
+          }
+      }).then((response)=>{
+        task = response.data.task;
+        task.toolbar = false;
+        that.$emit(method?'createTask':'updateTask', task);
+        that.$emit('closeTaskDialog');
+      }, (response)=>{
+          alert('通信失败');
+        });
     }
   }
 }

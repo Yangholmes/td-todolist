@@ -5,6 +5,7 @@
         <h1>今年任务</h1>
         <div class="task-add el-icon-plus" @touchend.stop.prevent="openCreateTask" v-if="operate"></div>
       </div>
+      <div v-if="tasks.lenght==0"><h2>还没有任务，新建一个吧↗</h2></div>
       <ul>
         <li v-for="task in tasks">
           <div class="task" @touchend="showToolbar(task)">
@@ -35,7 +36,7 @@
       </ul>
     </div>
 
-    <task-popup :task="task" :tasks="tasks" :taskPopupShow="taskPopupShow" @createTask="createTask" @updateTask="updateTask" @closeTaskDialog="closeTaskDialog"  v-if="taskPopupShow" ></task-popup>
+    <task-popup :task="task" :tasks="tasks" :taskPopupShow="taskPopupShow" @createTask="createTask" @updateTask="updateTask" @closeTaskDialog="closeTaskDialog"  v-if="taskPopupShow"></task-popup>
   </div>
 </template>
 
@@ -54,6 +55,7 @@ export default {
         return task
       });
     }, (respones)=>{
+      this.tasks = [];
       alert('通信失败');
     } );
   },
@@ -99,15 +101,7 @@ export default {
       console.log('retrieve');
     },
     updateTask (task) {
-      for(let i=0;i<this.tasks.length;i++){
-        if( this.tasks[i].id == task.id ){
-          for( let p in this.tasks[i] ){
-            if(typeof this.tasks[i][p] !== 'function')
-            this.tasks[i][p] = task[p];
-          }
-        }
-          // this.tasks[i] = task;
-      }
+      this.tasks.push(task);
     },
     deleteTask (task) {
       console.log('delete');
@@ -175,6 +169,13 @@ export default {
   line-height: 2em;
   border-radius: 50%;
   color: white;
+}
+
+h2 {
+  font-size: 100%;
+  font-weight: normal;
+  margin: 0 auto; padding: 0;
+  text-align: center;
 }
 
 .board ul{
