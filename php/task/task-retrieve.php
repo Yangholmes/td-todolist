@@ -29,7 +29,7 @@ $taskQuery->selectTable("task");
 /**
  * retrieve the task
  */
-$condition = "user = $user";
+$condition = "user = '$user'";
 $tasks = $taskQuery->simpleSelect(null, $condition, ['`createDate`', 'ASC'], null);
 
 $response = [
