@@ -7,7 +7,7 @@
     </header>
 
     <!-- 看板 -->
-    <board id="board" :operate="false"></board>
+    <board id="board" :operate="false" :other="other"></board>
     <hr>
     <!-- 日志 -->
     <history  v-for="(item,index) in historys" :key="index" :history="item"></history>
@@ -24,6 +24,7 @@ import watchOtherPopup from '../modules/watch-other-popup.vue'
 export default {
   data () {
     return {
+      other: null,
       historys: [{
           id:'5',
           date: '2017/5/5',
@@ -44,6 +45,17 @@ export default {
     history,
     board,
     watchOtherPopup
+  },
+  mounted () {
+    let otherUser = localStorage.getItem('otherUser'),
+        otherDate = localStorage.getItem('otherDate');
+    if(otherDate&&otherUser){
+      this.other = {user: otherUser, date: otherDate};
+      localStorage.clear();
+    }
+    else{
+      this.other = null;
+    }
   },
   methods:{
     loadMore:function(){
