@@ -8,12 +8,12 @@
       <div class="task-popup-content">
         <div class="input-field text-field">
           <label class="input-field-label">任务名称:</label>
-          <input type="text" placeholder="请输入任务名称" v-model="thisTask.taskName">
+          <input type="text" placeholder="请输入任务名称" v-model="taskName">
         </div>
         <div class="input-field date-field">
           <div class="open-date-picker" @touchend="openDatePicker"></div>
           <label class="input-field-label">预计完成:</label>
-          <input type="text" placeholder="点击选择日期" v-model="thisTask.scheduleDate">
+          <input type="text" placeholder="点击选择日期" v-model="scheduleDate" @focus="openDatePicker">
         </div>
       </div>
 
@@ -33,7 +33,24 @@ export default {
   props: ['task', 'tasks', 'taskPopupShow'],
   data () {
     return {
-
+      scheduleDate: '',
+      taskName: ''
+    }
+  },
+  watch: {
+    scheduleDate: {
+      deep: true,
+      handler: function(val, oldVal){
+        console.log(val);
+        this.thisTask.scheduleDate = val;
+      }
+    },
+    taskName: {
+      deep: true,
+      handler: function(val, oldVal){
+        console.log(val);
+        this.thisTask.taskName = val;
+      }
     }
   },
   computed: {
@@ -43,36 +60,36 @@ export default {
     thisTask (){
       let task = {},
           date = new Date();
-
       for( let p in this.task ){
         if(typeof this.task[p] !== 'function')
           task[p] = this.task[p];
       }
       if( !this.task.id )
         task.createDate = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
-
       return task;
     }
   },
   methods: {
     openDatePicker () {
+      let that = this;
       // 引入钉钉后可用
-      // dd.biz.util.datetimepicker({
-      //   format: 'yyyy-MM-dd',
-      //   value: '', //默认显示
-      //   onSuccess : function(result) {
-      //     result.value
-      //   },
-      //   onFail : function() {
-      //
-      //   }
-      // });
+      dd.biz.util.datetimepicker({
+        format: 'yyyy-MM-dd',
+        value: '', //默认显示
+        onSuccess : function(result) {
+          that.scheduleDate = result.value;
+        },
+        onFail : function() {}
+      });
     },
     cancel () {
       this.$emit('closeTaskDialog');
     },
     confirm () {
-      this.postData(!this.thisTask.id);
+      if( this.thisTask.taskName && this.thisTask.scheduleDate )
+        this.postData(!this.thisTask.id);
+      else
+      this.$message({ message: '任务名称和日期不能为空！', type: 'warning', showClose: true });
     },
     postData (method) {
       let that = this,
@@ -97,7 +114,7 @@ export default {
         }
         that.$emit('closeTaskDialog');
       }, (response)=>{
-          alert('通信失败');
+          this.$message.error('通信失败!');
         });
     }
   }
@@ -141,7 +158,8 @@ header.task-popup-header h1{
 .input-field input{
   border: none;
   background: rgba(255, 255, 255, 0);
-  outline: none
+  outline: none;
+  width: calc( 100% - 6em );
 }
 .date-field .open-date-picker{
   position: absolute;

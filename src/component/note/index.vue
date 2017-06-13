@@ -82,7 +82,7 @@ export default {
          this.loading=false;
       }, (response)=>{
         this.loading=false;
-          alert('通信失败');
+          this.$message.error({showClose: true, message: '日志模块通信失败!'});
         });
       },
       loadingChange:function(loading) {

@@ -12,12 +12,17 @@
 
   <script>
   var url = document.location.href,
-      user = url.replace(/(.+\?user=)(\w+)(&)(.+)/, '$2'),
-      date = url.replace(/(.+\&date=)(\w+)/, '$2');
+      user = url.replace(/(.+\?user=)([0-9A-Za-z]*)(&*)(.*)/, '$2'),
+      date = url.replace(/(.+\&date=)([0-9A-Za-z-/]*)(&*)(.*)/, '$2');
 
   localStorage.setItem('otherUser', user);
   localStorage.setItem('otherDate', date);
-  document.location.href = './';
+
+  console.log('user is '+user);
+  console.log('date is '+date);
+  // history.pushState({}, "", "./");
+  // document.location.href = './';
+  document.location.replace('./');
   </script>
 </body>
 </html>

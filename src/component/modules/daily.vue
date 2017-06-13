@@ -83,8 +83,9 @@ export default {
         }
         this.$emit('loadingChange',false);
       }, (response)=>{
+
           this.$emit('loadingChange',false);
-          alert('通信失败');
+          this.$message.error({showClose: true, message: '日志模块通信失败!'});
         });
 
 
@@ -186,7 +187,7 @@ export default {
 
 
               }, (response)=>{
-                  alert('通信失败');
+                  this.$message.error({showClose: true, message: '日志模块通信失败!'});
                 });
 
                 this.$message.success('添加日志成功！');

@@ -68,12 +68,11 @@ class Msg{
 
   /**
    * @param $msg: must be a associate array[]
-   *
-   * @param touser: [],
-   * @param message_url: string,
-   * @param image: string,
-   * @param rich: string,
-   * @param content: string
+   *  @param touser: [],
+   *  @param message_url: string,
+   *  @param image: string,
+   *  @param rich: string,
+   *  @param content: string
    * Yangholmes
    */
   private function _corpMsgFilter($msg){

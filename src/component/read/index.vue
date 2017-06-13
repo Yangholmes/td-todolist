@@ -27,12 +27,31 @@ import watchOtherPopup from '../modules/watch-other-popup.vue'
 export default {
   data () {
     return {
+<<<<<<< HEAD
       historys: [],
       other: null,
       watchOtherPopupVisible: false,
       currentUser:_uer.empId,
       loading:true,
       selectDate:''
+=======
+      other: null,
+      historys: [{attendance:{
+          id:'1',
+          createDate: '2017/5/5',
+          attendance: ['1'],
+
+      },dailys: [{
+          content: '11111',
+          status: 1
+      },
+      {
+          content: '2222',
+          status: 0
+      }]}
+    ],
+    watchOtherPopupVisible: false,
+>>>>>>> 78ce2a6d13472c99b25ce5c3b07c511b3d4c5859
     }
   },
   components: {
@@ -90,7 +109,7 @@ export default {
       if(response.data.error == 0){
         var results = response.data.results;
         if(!results.length){
-          alert('没有更多纪录了哦');
+          this.$message({message: '已经没有纪录了哦',type: 'warning'});
         }
         for(var i=0; i<results.length; i++)
         {
@@ -101,7 +120,7 @@ export default {
       this.loading=false;
     }, (response)=>{
       this.loading=false;
-        alert('通信失败');
+        this.$message.error({showClose: true, message: '日志模块通信失败!'});
       });
     },
     selectARecord: function(){
@@ -124,7 +143,7 @@ export default {
       this.loading=false;
     }, (response)=>{
         this.loading=false;
-        alert('通信失败');
+        this.$message.error({showClose: true, message: '日志查询失败!'});
       });
     },
   }
