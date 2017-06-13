@@ -47,35 +47,36 @@ export default {
   components: {
     taskPopup: (resolve) => require(['./task-popup.vue'], resolve)
   },
-  props: ['operate'],
+  props: ['operate', 'other'],
   mounted () {
-    this.$http.get('http://192.168.4.16/dingding/td-todolist/php/task/task-retrieve.php?user='+'03424264076698').then( (respones)=>{
-      this.tasks = respones.data.tasks.map((task)=>{
-        task.toolbar = false;
-        return task
-      });
-    }, (respones)=>{
-      this.tasks = [];
-      alert('通信失败');
-    } );
+    this.retrieveData("03424264076698");
   },
   data() {
-      return {
-        taskPopupShow: false,
-        task: {
-          id: null,
-          taskName: null,
-          createDate: null,
-          scheduleDate: null,
-          finishDate: null,
-          rate: null,
-          toolbar: false,
-          user: "03424264076698",
-          status: 0
-        },
-        tasks: []
+    return {
+      taskPopupShow: false,
+      task: {
+        id: null,
+        taskName: null,
+        createDate: null,
+        scheduleDate: null,
+        finishDate: null,
+        rate: null,
+        toolbar: false,
+        user: "03424264076698",
+        status: 0
+      },
+      tasks: []
+    }
+  },
+  watch: {
+    other: {
+      deep: true,
+      handler: function(val, oldVal){
+        console.log(val);
+        this.retrieveData(val.user);
       }
-    },
+    }
+  },
   methods: {
     rate (task, e) {
     },
@@ -160,6 +161,17 @@ export default {
           }
         }
       });
+    },
+    retrieveData (user) {
+      this.$http.get('http://192.168.4.16/dingding/td-todolist/php/task/task-retrieve.php?user='+user).then( (respones)=>{
+        this.tasks = respones.data.tasks.map((task)=>{
+          task.toolbar = false;
+          return task
+        });
+      }, (respones)=>{
+        this.tasks = [];
+        alert('通信失败');
+      } );
     },
     postData (method, data, callback) {
       let that = this,
