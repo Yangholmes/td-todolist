@@ -24,6 +24,7 @@ import watchOtherPopup from '../modules/watch-other-popup.vue'
 export default {
   data () {
     return {
+      other: null,
       historys: [{attendance:{
           id:'1',
           createDate: '2017/5/5',
@@ -38,8 +39,7 @@ export default {
           status: 0
       }]}
     ],
-      other: null,
-      watchOtherPopupVisible: false,
+    watchOtherPopupVisible: false,
     }
   },
   components: {

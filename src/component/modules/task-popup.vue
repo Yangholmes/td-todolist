@@ -13,7 +13,7 @@
         <div class="input-field date-field">
           <div class="open-date-picker" @touchend="openDatePicker"></div>
           <label class="input-field-label">预计完成:</label>
-          <input type="text" placeholder="点击选择日期" v-model="thisTask.scheduleDate">
+          <input type="text" placeholder="点击选择日期" v-model="thisTask.scheduleDate" @focus="openDatePicker">
         </div>
       </div>
 
@@ -43,19 +43,18 @@ export default {
     thisTask (){
       let task = {},
           date = new Date();
-
       for( let p in this.task ){
         if(typeof this.task[p] !== 'function')
           task[p] = this.task[p];
       }
       if( !this.task.id )
         task.createDate = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
-
       return task;
     }
   },
   methods: {
     openDatePicker () {
+      console.log('pick a date');
       // 引入钉钉后可用
       // dd.biz.util.datetimepicker({
       //   format: 'yyyy-MM-dd',
@@ -72,7 +71,10 @@ export default {
       this.$emit('closeTaskDialog');
     },
     confirm () {
-      this.postData(!this.thisTask.id);
+      if( this.thisTask.taskName && this.thisTask.scheduleDate )
+        this.postData(!this.thisTask.id);
+      else
+      this.$message({ message: '任务名称和日期不能为空！', type: 'warning', showClose: true });
     },
     postData (method) {
       let that = this,
@@ -97,7 +99,7 @@ export default {
         }
         that.$emit('closeTaskDialog');
       }, (response)=>{
-          alert('通信失败');
+          this.$message.error('通信失败!');
         });
     }
   }
@@ -141,7 +143,8 @@ header.task-popup-header h1{
 .input-field input{
   border: none;
   background: rgba(255, 255, 255, 0);
-  outline: none
+  outline: none;
+  width: calc( 100% - 6em );
 }
 .date-field .open-date-picker{
   position: absolute;

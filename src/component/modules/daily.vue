@@ -82,7 +82,7 @@ export default {
           this.attId = response.data.attendance.id;
         }
       }, (response)=>{
-          alert('通信失败');
+          this.$message.error({showClose: true, message: '日志模块通信失败!'});
         });
 
 
@@ -185,7 +185,7 @@ export default {
 
 
               }, (response)=>{
-                  alert('通信失败');
+                  this.$message.error({showClose: true, message: '日志模块通信失败!'});
                 });
 
                 this.$message.success('添加日志成功！');
