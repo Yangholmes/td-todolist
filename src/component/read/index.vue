@@ -24,19 +24,20 @@ import watchOtherPopup from '../modules/watch-other-popup.vue'
 export default {
   data () {
     return {
-      historys: [{
-          id:'5',
-          date: '2017/5/5',
-          checkList: ['本地'],
-          dailys: [{
-              content: '11111',
-              status: 1
-          },
-          {
-              content: '2222',
-              status: 0
-          }]
-      }],
+      historys: [{attendance:{
+          id:'1',
+          createDate: '2017/5/5',
+          attendance: ['1'],
+
+      },dailys: [{
+          content: '11111',
+          status: 1
+      },
+      {
+          content: '2222',
+          status: 0
+      }]}
+    ],
       watchOtherPopupVisible: false,
     }
   },
@@ -47,45 +48,45 @@ export default {
   },
   methods:{
     loadMore:function(){
-      let array=[{
+      let array=[{attendance:{
           id:'1',
-          date: '2017/5/7',
-          checkList: ['本地'],
-          dailys: [{
-              content: '11111',
-              status: 1
-          },
-          {
-              content: '2222',
-              status: 0
-          }]
+          createDate: '2017/5/5',
+          attendance: ['1'],
+
+      },dailys: [{
+          content: '11111',
+          status: 1
       },
       {
+          content: '2222',
+          status: 0
+      }]},
+      {attendance:{
           id:'2',
-          date: '2017/5/6',
-          checkList: ['外勤'],
-          dailys: [{
-              content: '11111',
-              status: 1
-          },
-          {
-              content: '2222',
-              status: 0
-          }]
+          createDate: '2017/5/6',
+          attendance: ['1'],
+
+      },dailys: [{
+          content: '11111',
+          status: 1
       },
       {
+          content: '2222',
+          status: 0
+      }]},
+      {attendance:{
           id:'3',
-          date: '2017/5/5',
-          checkList: ['本地','加班'],
-          dailys: [{
-              content: '11111',
-              status: 1
-          },
-          {
-              content: '2222',
-              status: 0
-          }]
-        }
+          createDate: '2017/5/7',
+          attendance: ['1'],
+
+      },dailys: [{
+          content: '11111',
+          status: 1
+      },
+      {
+          content: '2222',
+          status: 0
+      }]},
       ];
       for(var i=0; i < array.length; i++){
         console.log(i);

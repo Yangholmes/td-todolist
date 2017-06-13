@@ -6,7 +6,7 @@
 
   <div style="text-align:center;color: #adadad;font-size: .8em; height: 2em; line-height: 2em;">
     <span @click="loadMore">加载历史</span></div>
-  <history  v-for="(item,index) in historys" :key="index" :history="item"></history>
+  <history  v-for="(item,index) in historys" :key="item.attendance.id" :history="item"></history>
   <daily v-on:dailySubmit="submit"></daily>
 </div>
 </template>
@@ -19,7 +19,8 @@ import board from '../modules/board.vue'
 export default {
     data() {
         return {
-            historys: []
+            historys: [],
+            isUpdate: true
 
         }
     },
@@ -30,53 +31,69 @@ export default {
     },
     methods:{
       submit:function(param){
-        //this.historys.splice(0,0,param);
-        this.historys.push(param);
+        console.log(param);
+        //字符串转字符串数组
+        var response=param.response;
+        this.isUpdate=false;
+        if(param.attId==0){
+          response.attendance.attendance = response.attendance.attendance.split(",");
+          this.historys.push(response);
+        }
+        else{
+          for(var i=0; i<this.historys.length; i++){
+            if(response.attendance.id == this.historys[i].attendance.id){
+              for(var j=0; j<response.dailys.length; j++)
+              this.historys[i].dailys.push(response.dailys[j]);
+            }
+          }
+        }
+        console.log(this.historys);
+
       },
       loadMore:function(){
-        let array=[{
-            id:'1',
-            date: '2017/5/5',
-            checkList: ['本地'],
-            dailys: [{
-                content: '11111',
-                status: 1
-            },
-            {
-                content: '2222',
-                status: 0
-            }]
-        },
-        {
-            id:'2',
-            date: '2017/5/6',
-            checkList: ['外勤'],
-            dailys: [{
-                content: '11111',
-                status: 1
-            },
-            {
-                content: '2222',
-                status: 0
-            }]
-        },
-        {
+        let array=[{attendance:{
             id:'3',
-            date: '2017/5/7',
-            checkList: ['本地','加班'],
-            dailys: [{
-                content: '11111',
-                status: 1
-            },
-            {
-                content: '2222',
-                status: 0
-            }]
-          }
+            createDate: '2017/5/7',
+            attendance: ['1'],
+
+        },dailys: [{
+            content: '11111',
+            status: 1
+        },
+        {
+            content: '2222',
+            status: 0
+        }]},
+        {attendance:{
+            id:'2',
+            createDate: '2017/5/6',
+            attendance: ['2'],
+
+        },dailys: [{
+            content: '11111',
+            status: 1
+        },
+        {
+            content: '2222',
+            status: 0
+        }]},
+        {attendance:{
+            id:'1',
+            createDate: '2017/5/5',
+            attendance: ['3'],
+
+        },dailys: [{
+            content: '11111',
+            status: 1
+        },
+        {
+            content: '2222',
+            status: 0
+        }]},
         ];
         for(var i=0; i < array.length; i++){
           console.log(i);
-          this.historys.push(array[i]);
+          this.historys.unshift(array[i]);
         }
       }
     }

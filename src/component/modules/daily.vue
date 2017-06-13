@@ -2,14 +2,14 @@
 <div class="daily">
     <el-card class="box-card">
         <div slot="header" class="clearfix">
-            <span style="line-height: 36px;">{{date}} 工作日志</span>
+            <span style="line-height: 36px;">{{createDate}} 工作日志</span>
             <el-button type="primary" class="btn-add el-icon-plus" @click="openDial()"></el-button>
         </div>
-        <el-checkbox-group v-model="checkList">
-            <el-checkbox label="本地"></el-checkbox>
-            <el-checkbox label="加班"></el-checkbox>
-            <el-checkbox label="外勤"></el-checkbox>
-            <el-checkbox label="出差"></el-checkbox>
+        <el-checkbox-group v-model="attendance">
+            <el-checkbox label="1">本地</el-checkbox>
+            <el-checkbox label="2">加班</el-checkbox>
+            <el-checkbox label="3">外勤</el-checkbox>
+            <el-checkbox label="4">出差</el-checkbox>
         </el-checkbox-group>
         <p v-if="!dailys.length" class="info">请增加工作内容</p>
         <transition-group name="list" tag="div">
@@ -63,13 +63,35 @@ export default {
     created: function() {
         // `this` 指向 vm 实例
         let currentDate = new Date();
-        this.date = currentDate.getFullYear()+'/'+(currentDate.getMonth()+1)+'/'+currentDate.getDate();
+        this.createDate = currentDate.getFullYear()+'-'+(currentDate.getMonth()+1)+'-'+currentDate.getDate();
+        var url = 'http://localhost/td-todolist/php/daily/daily-retrieve.php'
+        var param = {
+            user: 'mj',
+            createDate:this.createDate
+        };
+
+      this.$http.post(url, param, {
+          emulateJSON: true,
+          headers: {
+              'Content-Type': 'enctype="application/x-www-form-urlencoded; charset=utf-8"'
+          }
+      }).then((response)=>{
+        console.log(response.data);
+        if(response.data.error == 0){
+          this.$emit('dailySubmit',{response:response.data,attId:this.attId});
+          this.attId = response.data.attendance.id;
+        }
+      }, (response)=>{
+          alert('通信失败');
+        });
+
+
     },
     data() {
         return {
             editIndex:-1,
-            date: '',
-            checkList: [],
+            createDate: '',
+            attendance: [],
             check1: {},
             dialogVisible: false,
             daily: {
@@ -89,7 +111,9 @@ export default {
                     trigger: 'change'
                 }]
             },
-            ccUsers:[]
+            ccUsers:[],
+            ccUserIds:[],
+            attId:0,
         };
     },
     methods: {
@@ -127,15 +151,46 @@ export default {
             console.log(this.dailys);
         },
         dailySubmit: function(checkForm) {
-            if (this.checkList.length) {
-              let param = {
-                  date: this.date,
-                  checkList: this.checkList,
-                  dailys: this.dailys
-              };
-              this.$emit('dailySubmit',param);
+            if (this.attendance.length) {
+              this.ccUserIds.push({user:1});//加上固定的抄送人
+              let att=this.attendance.toString();
+              var url;
+              var param;
+              if(this.attId==0){
+                url = 'http://localhost/td-todolist/php/daily/daily-add.php'
+                param = {
+                    attendance: {attendance:att,user:"mj",createDate:this.createDate},
+                    dailys: this.dailys,
+                    dailyCc: this.ccUserIds
+                };
+              }else{
+                url = 'http://localhost/td-todolist/php/daily/daily-update.php'
+                param = {
+                    attendance: {id:this.attId},
+                    dailys: this.dailys,
+                    dailyCc: this.ccUserIds
+                };
+              }
+              this.$http.post(url, param, {
+                  emulateJSON: true,
+                  headers: {
+                      'Content-Type': 'enctype="application/x-www-form-urlencoded; charset=utf-8"'
+                  }
+              }).then((response)=>{
+                console.log(response.data);
+                if(response.data.error == 0){
+                  this.$emit('dailySubmit',{response:response.data,attId:this.attId});
+                  this.attId = response.data.attendance.id;
+                }
+
+
+              }, (response)=>{
+                  alert('通信失败');
+                });
+
                 this.$message.success('添加日志成功！');
                 this.dailys = [];
+                this.ccUserIds = [];
             } else {
                 this.$message.error('请选择考勤');
                 return false;
@@ -163,7 +218,8 @@ export default {
           //        this.$message.error('非常抱歉！您的通信录打不开。。。');
           //      }
           // });
-          this.ccUsers.push({id:1, name:"卢威"});
+          this.ccUsers.push({user:2, name:"卢威"});
+          this.ccUserIds.push({user:2});
           console.log(this.ccUsers);
         },
         deleteCCPicker: function(index){

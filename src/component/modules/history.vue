@@ -2,13 +2,13 @@
 <div class="history daily">
     <el-card class="box-card">
         <div slot="header" class="clearfix">
-            <span style="line-height: 36px;">{{date}} 工作日志</span>
+            <span style="line-height: 36px;">{{createDate}} 工作日志</span>
         </div>
-        <el-checkbox-group v-model="checkList">
-            <el-checkbox label="本地" disabled></el-checkbox>
-            <el-checkbox label="加班" disabled></el-checkbox>
-            <el-checkbox label="外勤" disabled></el-checkbox>
-            <el-checkbox label="出差" disabled></el-checkbox>
+        <el-checkbox-group v-model="attendance">
+            <el-checkbox label="1" disabled>本地</el-checkbox>
+            <el-checkbox label="2" disabled>加班</el-checkbox>
+            <el-checkbox label="3" disabled>外勤</el-checkbox>
+            <el-checkbox label="4" disabled>出差</el-checkbox>
         </el-checkbox-group>
         <div v-for="(o,index) in dailys" :key="index" class="text item">
             <div class="heading">任务{{ index+1 }} <i v-if="o.status" class="el-icon-check"></i><i v-else class="el-icon-more"></i></div>
@@ -24,8 +24,8 @@ export default {
     props: ['history'],
     data() {
         return {
-            date: this.history.date ? this.history.date : '',
-            checkList: this.history.checkList ? this.history.checkList : '',
+            createDate: this.history.attendance.createDate ? this.history.attendance.createDate : '',
+            attendance: this.history.attendance.attendance ? this.history.attendance.attendance : '',
             dailys: this.history.dailys ? this.history.dailys : [],
         };
     }
