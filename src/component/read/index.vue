@@ -113,7 +113,7 @@ export default {
     },
     watchOther (other) {
       this.watchOtherPopupVisible = false;
-      console.log(other);
+      this.other = other;
     }
   }
 }
