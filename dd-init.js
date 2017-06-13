@@ -1,4 +1,4 @@
-;
+/* jshint esversion: 6 */
 
 /**
  * super global variables
@@ -61,9 +61,9 @@ dd.ready( function() {
         corpId: _config.corpId[0],
         onSuccess: function(result) {
             yang.ajax("./server/verification/get-user-info.php?access_token=" + _config.accessToken + "&code=" + result.code, {dataType: 'json', method: 'GET'})
-                .then( (respond) => {
+                .then( function(respond) {
                     _user = JSON.parse(respond.response);
-                }, (respond) => {
+                }, function(respond) {
                     alert('err');
                 })
         },

@@ -76,7 +76,7 @@ export default {
       deep: true,
       handler: function(val, oldVal){
         console.log(val);
-        this.retrieveData(val.user);
+        this.retrieveData(val.user.emplId || val.user);
       }
     }
   },

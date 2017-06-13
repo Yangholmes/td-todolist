@@ -3,7 +3,7 @@
 /**
  * require Auth api
  */
- require_once( __DIR__.'/../../server/api/Auth.php');
+ require_once( __DIR__.'/../../php/api/Auth.php');
 
 /**
  * Yangholmes 2017-03-03

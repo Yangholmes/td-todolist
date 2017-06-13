@@ -10,7 +10,7 @@
         <div class="input-field colleague-field">
           <div class="open-colleague-picker picker" @touchend="openColleaguePicker"></div>
           <label class="input-field-label">选择同事</label>
-          <input type="text" placeholder="点击选择同事" v-model="user">
+          <input type="text" placeholder="点击选择同事" v-model="user.name">
         </div>
         <div class="input-field date-field">
           <div class="open-date-picker picker" @touchend="openDatePicker"></div>
@@ -35,45 +35,47 @@
 export default {
   data () {
     return {
-      user: null,
-      date: null
+      user: {name: null, userid: null},
+      date: null,
     }
   },
   methods: {
     openColleaguePicker (){
+      let that = this;
       // 引入钉钉后可用
-      // dd.biz.contact.choose({
-      //      startWithDepartmentId: -1, //-1表示打开的通讯录从自己所在部门开始展示, 0表示从企业最上层开始，(其他数字表示从该部门开始:暂时不支持)
-      //      multiple: false, //是否多选： true多选 false单选； 默认true
-      //      users: null, //默认选中的用户列表，userid；成功回调中应包含该信息
-      //      disabledUsers: null, // 不能选中的用户列表，员工userid
-      //      corpId: window._config.corpId, //企业id
-      //      // max: , //人数限制，当multiple为true才生效，可选范围1-1500
-      //      limitTips: "挑太多啦！", //超过人数限制的提示语可以用这个字段自定义
-      //      isNeedSearch: true, // 是否需要搜索功能
-      //      title: "挑个人呗~", // 如果你需要修改选人页面的title，可以在这里赋值
-      //      local: "false", // 是否显示本地联系人，默认false
-      //      onSuccess: function(data) {
-      //        // todo
-      //        this.user = data;
-      //      },
-      //      onFail: function(err) {
-      //        // todo
-      //      }
-      // });
+      dd.biz.contact.choose({
+           startWithDepartmentId: -1, //-1表示打开的通讯录从自己所在部门开始展示, 0表示从企业最上层开始，(其他数字表示从该部门开始:暂时不支持)
+           multiple: false, //是否多选： true多选 false单选； 默认true
+           users: null, //默认选中的用户列表，userid；成功回调中应包含该信息
+           disabledUsers: null, // 不能选中的用户列表，员工userid
+           corpId: window._config.corpId, //企业id
+           // max: , //人数限制，当multiple为true才生效，可选范围1-1500
+           limitTips: "挑太多啦！", //超过人数限制的提示语可以用这个字段自定义
+           isNeedSearch: true, // 是否需要搜索功能
+           title: "挑个人呗~", // 如果你需要修改选人页面的title，可以在这里赋值
+           local: "false", // 是否显示本地联系人，默认false
+           onSuccess: function(data) {
+             // todo
+             that.user = data[0];
+           },
+           onFail: function(err) {
+             // todo
+           }
+      });
     },
     openDatePicker () {
+      let that = this;
       // 引入钉钉后可用
-      // dd.biz.util.datetimepicker({
-      //   format: 'yyyy-MM-dd',
-      //   value: '', //默认显示
-      //   onSuccess : function(result) {
-      //     this.date = result.value;
-      //   },
-      //   onFail : function() {
-      //
-      //   }
-      // });
+      dd.biz.util.datetimepicker({
+        format: 'yyyy-MM-dd',
+        value: '', //默认显示
+        onSuccess : function(result) {
+          that.date = result.value;
+        },
+        onFail : function() {
+
+        }
+      });
     },
     cancel () {
       this.$emit('watchOther', null);
@@ -129,7 +131,8 @@ header.watch-other-popup-header h1{
 .input-field input{
   border: none;
   background: rgba(255, 255, 255, 0);
-  outline: none
+  outline: none;
+  width: calc( 100% - 6em );
 }
 .picker{
   position: absolute;
