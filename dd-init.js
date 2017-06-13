@@ -41,7 +41,7 @@ dd.config({
 /**
  * 钉钉入口
  */
-dd.ready(function() {
+dd.ready( function() {
 
     /**
      * 容器

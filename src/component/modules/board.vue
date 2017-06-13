@@ -5,7 +5,7 @@
         <h1>今年任务</h1>
         <div class="task-add el-icon-plus" @touchend.stop.prevent="openCreateTask" v-if="operate"></div>
       </div>
-      <div v-if="tasks.lenght==0"><h2>还没有任务，新建一个吧↗</h2></div>
+      <div class="no-task" v-if="tasks.lenght==0"><h2>还没有任务，新建一个吧↗</h2></div>
       <ul>
         <li v-for="task in tasks">
           <div class="task" @touchend="showToolbar(task)">
@@ -22,7 +22,7 @@
             </div>
             <img src="../../assets/finish.png" v-if="task.status==1" class="badge finish-badge">
             <img src="../../assets/cancel.png" v-if="task.status==3" class="badge cancel-badge">
-            <div class="finish-date">{{task.finishDate}}</div>
+            <div class="finish-date">{{task.finishDate ? task.finishDate.replace(/[0-9]{4}-/, '') : null}}</div>
           </div>
           <transition name="toggle">
             <div class="toolbar" v-if="operate && task.toolbar && task.status==0" @touchend="showToolbar(task)">
@@ -90,24 +90,39 @@ export default {
       this.taskPopupShow = true;
     },
     createTask (task) {
-      console.log(task);
       this.tasks.push(task);
     },
     finishTask (task) {
-      task.finishDate = new Date().getMonth() + '/' + new Date().getDay();
-      task.status = 1;
+      this.endTask(1, task);
     },
     retrieveTask (task) {
       console.log('retrieve');
     },
     updateTask (task) {
-      this.tasks.push(task);
+      for(let i=0; i<this.tasks.length; i++){
+        if(this.tasks[i].id == task.id)
+          for( let t in this.tasks[i] ){
+            if( typeof this.tasks[i][t] != 'function' )
+              // console.log( this.tasks[i][r].toString() );
+              this.tasks[i][t] = task[t];
+          }
+      }
     },
     deleteTask (task) {
-      console.log('delete');
+      this.postData(0, {id: task.id}, (data)=>{
+        if(!data.error){
+          let tasks = [];
+          for(let i=0; i<this.tasks.length; i++){
+            if(this.tasks[i].id!=data.id){
+              tasks.push( this.tasks[i] );
+            }
+          }
+          this.tasks = tasks;
+        }
+      });
     },
     cancelTask (task) {
-      task.status = 3;
+      this.endTask(3, task);
     },
     closeTaskDialog () {
       this.taskPopupShow = false;
@@ -122,6 +137,43 @@ export default {
         user: "03424264076698",
         status: 0
       };
+    },
+    endTask (status, task) {
+      let date = new Date(),
+          temp = {};
+
+      for( let t in task ){
+        if( typeof task[t] != 'function' && t!='toolbar' )
+          // console.log( task[r].toString() );
+          temp[t] = task[t];
+      }
+      temp.finishDate = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
+      temp.status = status;
+
+      this.postData(1, {task: temp}, (data)=>{
+        if(data.error==0){
+          for(let i=0; i<this.tasks.length; i++){
+            if(this.tasks[i].id == data.task.id){
+              this.tasks[i].finishDate = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();;
+              this.tasks[i].status = status;
+            }
+          }
+        }
+      });
+    },
+    postData (method, data, callback) {
+      let that = this,
+          url = method ? 'http://192.168.4.16/dingding/td-todolist/php/task/task-update.php' : 'http://192.168.4.16/dingding/td-todolist/php/task/task-delete.php';
+      this.$http.post(url, data, {
+              emulateJSON: true,
+              headers: {
+                  'Content-Type': 'enctype="application/x-www-form-urlencoded; charset=utf-8"'
+              }
+          }).then((response)=>{
+            callback(response.data);
+          }, (response)=>{
+            alert('通信失败');
+          });
     }
   }
 }
@@ -171,7 +223,7 @@ export default {
   color: white;
 }
 
-h2 {
+.no-task h2 {
   font-size: 100%;
   font-weight: normal;
   margin: 0 auto; padding: 0;

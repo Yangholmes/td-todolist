@@ -49,7 +49,7 @@ export default {
           task[p] = this.task[p];
       }
       if( !this.task.id )
-        task = date.getFullYear() + '/' + (date.getMonth()+1) + '/' + date.getDate();
+        task.createDate = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
 
       return task;
     }
@@ -72,9 +72,9 @@ export default {
       this.$emit('closeTaskDialog');
     },
     confirm () {
-      this.postDate(!this.thisTask.id);
+      this.postData(!this.thisTask.id);
     },
-    postDate (method) {
+    postData (method) {
       let that = this,
           task = {},
           url = method ? 'http://192.168.4.16/dingding/td-todolist/php/task/task-add.php' : 'http://192.168.4.16/dingding/td-todolist/php/task/task-update.php';
@@ -90,9 +90,11 @@ export default {
               'Content-Type': 'enctype="application/x-www-form-urlencoded; charset=utf-8"'
           }
       }).then((response)=>{
-        task = response.data.task;
-        task.toolbar = false;
-        that.$emit(method?'createTask':'updateTask', task);
+        if(response.data.error==0){
+          task = response.data.task;
+          task.toolbar = false;
+          that.$emit(method?'createTask':'updateTask', task);
+        }
         that.$emit('closeTaskDialog');
       }, (response)=>{
           alert('通信失败');

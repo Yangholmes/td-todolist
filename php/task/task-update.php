@@ -1,9 +1,9 @@
 <?php
 
 /**
- * 新增一条task记录
+ * 更新一条task记录
  * http方法： POST
- * 2017/06/09 Yangholmes
+ * 2017/06/12 Yangholmes
  */
 
 /**
@@ -27,17 +27,16 @@ $taskQuery->selectDb(DB_DATABASE); //
 $taskQuery->selectTable("task");
 
 /**
- * insert new task
+ * update the item
  */
-$result = $task ? $taskQuery->insert($task) : false; // task can not be null
+$condition = "id = '".$task['id']."'";
+$result = $taskQuery->update($task, $condition, null, null);
 
 if(!$result){
-  $error = '1';
-  $errorMsg = '新增任务失败';
+  $error = '2';
+  $errorMsg = '修改任务失败';
 }
 else{
-  $result = $taskQuery->query('select @@IDENTITY');
-  $condition = "id = '".$result[0]['@@IDENTITY']."'";
   $task = $taskQuery->simpleSelect(null, $condition, null, null)[0];
   $error = '0';
   $errorMsg = '';

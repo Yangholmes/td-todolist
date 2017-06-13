@@ -7,7 +7,7 @@
     </header>
 
     <!-- 看板 -->
-    <board id="board" :operate="false"></board>
+    <board id="board" :operate="false" :other="other"></board>
     <hr>
     <!-- 日志 -->
     <history  v-for="(item,index) in historys" :key="index" :history="item"></history>
@@ -38,6 +38,7 @@ export default {
           status: 0
       }]}
     ],
+      other: null,
       watchOtherPopupVisible: false,
     }
   },
@@ -45,6 +46,17 @@ export default {
     history,
     board,
     watchOtherPopup
+  },
+  mounted () {
+    let otherUser = localStorage.getItem('otherUser'),
+        otherDate = localStorage.getItem('otherDate');
+    if(otherDate&&otherUser){
+      this.other = {user: otherUser, date: otherDate};
+      localStorage.clear();
+    }
+    else{
+      this.other = null;
+    }
   },
   methods:{
     loadMore:function(){

@@ -8,7 +8,15 @@ import read  from './component/read/index.vue'
 const routes = [
   {
     path: '/',
-    redirect: '/index'
+    // redirect: '/index'
+    redirect: () => {
+      let otherUser = localStorage.getItem('otherUser'),
+          otherDate = localStorage.getItem('otherDate');
+      if(otherDate&&otherUser)
+        return '/read';
+      else
+        return '/index';
+    }
   },
   {
     path: '/index',
