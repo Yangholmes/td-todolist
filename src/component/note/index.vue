@@ -3,11 +3,14 @@
 
   <board  :operate="true"></board>
   <hr>
-
+<div v-show="loading" class="daily-mask">
+  <div class="daily-mask-text">加载中...</div>
+</div>
   <div style="text-align:center;color: #adadad;font-size: .8em; height: 2em; line-height: 2em;">
     <span @click="loadMore">加载历史</span></div>
   <history  v-for="(item,index) in historys" :key="item.attendance.id" :history="item"></history>
-  <daily v-on:dailySubmit="submit"></daily>
+  <daily v-on:dailySubmit="submit"  v-on:loadingChange="loadingChange"></daily>
+
 </div>
 </template>
 
@@ -20,7 +23,9 @@ export default {
     data() {
         return {
             historys: [],
-            isUpdate: true
+            isUpdate: true,
+            currentUser: _uer.empId,
+            loading: false
 
         }
     },
@@ -31,7 +36,6 @@ export default {
     },
     methods:{
       submit:function(param){
-        console.log(param);
         //字符串转字符串数组
         var response=param.response;
         this.isUpdate=false;
@@ -47,54 +51,42 @@ export default {
             }
           }
         }
-        console.log(this.historys);
-
       },
       loadMore:function(){
-        let array=[{attendance:{
-            id:'3',
-            createDate: '2017/5/7',
-            attendance: ['1'],
-
-        },dailys: [{
-            content: '11111',
-            status: 1
-        },
-        {
-            content: '2222',
-            status: 0
-        }]},
-        {attendance:{
-            id:'2',
-            createDate: '2017/5/6',
-            attendance: ['2'],
-
-        },dailys: [{
-            content: '11111',
-            status: 1
-        },
-        {
-            content: '2222',
-            status: 0
-        }]},
-        {attendance:{
-            id:'1',
-            createDate: '2017/5/5',
-            attendance: ['3'],
-
-        },dailys: [{
-            content: '11111',
-            status: 1
-        },
-        {
-            content: '2222',
-            status: 0
-        }]},
-        ];
-        for(var i=0; i < array.length; i++){
-          console.log(i);
-          this.historys.unshift(array[i]);
+        this.loading=true;
+        var param;
+        if(this.historys.length){
+          param={user:this.currentUser,offset:this.historys.length};
         }
+        else{
+          param={user:this.currentUser,offset:0};
+        }
+        var url = 'http://localhost/td-todolist/php/daily/daily-loadhistory.php'
+      this.$http.post(url, param, {
+          emulateJSON: true,
+          headers: {
+              'Content-Type': 'enctype="application/x-www-form-urlencoded; charset=utf-8"'
+          }
+      }).then((response)=>{
+        if(response.data.error == 0){
+          var results = response.data.results;
+          if(!results.length){
+            this.$message({message: '已经没有纪录了哦',type: 'warning'});
+          }
+          for(var i=0; i<results.length; i++)
+          {
+            results[i].attendance.attendance=results[i].attendance.attendance.split(",");
+            this.historys.unshift(results[i]);
+          }
+        }
+         this.loading=false;
+      }, (response)=>{
+        this.loading=false;
+          alert('通信失败');
+        });
+      },
+      loadingChange:function(loading) {
+        this.loading=loading
       }
     }
 

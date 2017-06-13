@@ -9,9 +9,12 @@
     <!-- 看板 -->
     <board id="board" :operate="false" :other="other"></board>
     <hr>
+    <div v-show="loading" class="daily-mask">
+      <div class="daily-mask-text">加载中...</div>
+    </div>
     <!-- 日志 -->
     <history  v-for="(item,index) in historys" :key="index" :history="item"></history>
-    <div style="text-align:center;color: #adadad;font-size: .8em; height: 2em; line-height: 2em; margin: 1em auto">
+    <div v-if="selectDate.length == 0" style="text-align:center;color: #adadad;font-size: .8em; height: 2em; line-height: 2em; margin: 1em auto">
       <span @click="loadMore">点击加载</span>
     </div>
   </div>
@@ -24,22 +27,12 @@ import watchOtherPopup from '../modules/watch-other-popup.vue'
 export default {
   data () {
     return {
-      historys: [{attendance:{
-          id:'1',
-          createDate: '2017/5/5',
-          attendance: ['1'],
-
-      },dailys: [{
-          content: '11111',
-          status: 1
-      },
-      {
-          content: '2222',
-          status: 0
-      }]}
-    ],
+      historys: [],
       other: null,
       watchOtherPopupVisible: false,
+      currentUser:_uer.empId,
+      loading:true,
+      selectDate:''
     }
   },
   components: {
@@ -53,58 +46,18 @@ export default {
     if(otherDate&&otherUser){
       this.other = {user: otherUser, date: otherDate};
       localStorage.clear();
+      this.currentUser=other.user.empId;
     }
     else{
       this.other = null;
     }
+    this.historysLoad();
   },
   methods:{
     loadMore:function(){
-      let array=[{attendance:{
-          id:'1',
-          createDate: '2017/5/5',
-          attendance: ['1'],
-
-      },dailys: [{
-          content: '11111',
-          status: 1
-      },
-      {
-          content: '2222',
-          status: 0
-      }]},
-      {attendance:{
-          id:'2',
-          createDate: '2017/5/6',
-          attendance: ['1'],
-
-      },dailys: [{
-          content: '11111',
-          status: 1
-      },
-      {
-          content: '2222',
-          status: 0
-      }]},
-      {attendance:{
-          id:'3',
-          createDate: '2017/5/7',
-          attendance: ['1'],
-
-      },dailys: [{
-          content: '11111',
-          status: 1
-      },
-      {
-          content: '2222',
-          status: 0
-      }]},
-      ];
-      for(var i=0; i < array.length; i++){
-        console.log(i);
-        this.historys.push(array[i]);
-      }
+      this.historysLoad();
     },
+
     watchSelf () {
 
     },
@@ -114,7 +67,66 @@ export default {
     watchOther (other) {
       this.watchOtherPopupVisible = false;
       this.other = other;
-    }
+      this.currentUser=other.user.empId;
+      this.selectDate=other.date;
+      this.selectARecord();
+    },
+    historysLoad: function(){
+      this.loading=true;
+      var param;
+      if(this.historys.length){
+        param={user:this.currentUser,offset:this.historys.length};
+      }
+      else{
+        param={user:this.currentUser,offset:0};
+      }
+      var url = 'http://localhost/td-todolist/php/daily/daily-loadhistory.php'
+    this.$http.post(url, param, {
+        emulateJSON: true,
+        headers: {
+            'Content-Type': 'enctype="application/x-www-form-urlencoded; charset=utf-8"'
+        }
+    }).then((response)=>{
+      if(response.data.error == 0){
+        var results = response.data.results;
+        if(!results.length){
+          alert('没有更多纪录了哦');
+        }
+        for(var i=0; i<results.length; i++)
+        {
+          results[i].attendance.attendance=results[i].attendance.attendance.split(",");
+          this.historys.push(results[i]);
+        }
+      }
+      this.loading=false;
+    }, (response)=>{
+      this.loading=false;
+        alert('通信失败');
+      });
+    },
+    selectARecord: function(){
+      var url = 'http://localhost/td-todolist/php/daily/daily-retrieve.php'
+      var param = {
+          user: this.currentUser,
+          createDate:this.selectDate
+      };
+      this.loading=true;
+    this.$http.post(url, param, {
+        emulateJSON: true,
+        headers: {
+            'Content-Type': 'enctype="application/x-www-form-urlencoded; charset=utf-8"'
+        }
+    }).then((response)=>{
+      if(response.data.error == 0){
+        this.historys.splice(0,this.historys.length);//清空历史纪录
+        this.historys.push(results[i]);
+      }
+      this.loading=false;
+    }, (response)=>{
+        this.loading=false;
+        alert('通信失败');
+      });
+    },
   }
 }
 </script>
