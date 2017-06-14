@@ -33,7 +33,7 @@ export default {
       historys: [],
       other: null,
       watchOtherPopupVisible: false,
-      currentUser: "mj",
+      currentUser: _user.emplId,
       loading:true,
       selectDate: new Date().getFullYear() + '-' + (new Date().getMonth()+1) + '-' + new Date().getDate(),
       isloadMore:true
