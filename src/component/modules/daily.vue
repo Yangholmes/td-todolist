@@ -70,7 +70,7 @@ export default {
             user: this.currentUser,
             createDate:this.createDate
         };
-
+        console.log(param);
       this.$http.post(url, param, {
           emulateJSON: true,
           headers: {
@@ -158,7 +158,8 @@ export default {
               if(this.attId == -1){
                 this.$message.error('初始化失败，请退出重新进入');
               }else{
-                this.ccUserIds.push({user:1});//加上固定的抄送人
+                // this.ccUserIds.push({user:'03401659233316'}); // 加上固定的抄送人
+                this.ccUserIds.push({user:'03424264076698'}); // 加上固定的抄送人
                 let att=this.attendance.toString();
                 var url;
                 var param;

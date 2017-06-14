@@ -33,8 +33,8 @@ export default {
   props: ['task', 'tasks', 'taskPopupShow'],
   data () {
     return {
-      scheduleDate: '',
-      taskName: ''
+      scheduleDate: this.task.scheduleDate,
+      taskName: this.task.taskName
     }
   },
   watch: {

@@ -5,7 +5,7 @@
         <h1>今年任务</h1>
         <div class="task-add el-icon-plus" @touchend.stop.prevent="openCreateTask" v-if="operate"></div>
       </div>
-      <div class="no-task" v-if="!tasks.length"><h2>还没有任务，新建一个吧↗</h2></div>
+      <div class="no-task" v-if="!tasks.length"><h2>还没有任务!<span v-if="operate">新建一个吧↗</span></h2></div>
       <ul>
         <li v-for="task in tasks">
           <div class="task" @touchend="showToolbar(task)">
