@@ -24,7 +24,7 @@ export default {
         return {
             historys: [],
             isUpdate: true,
-            currentUser: _user.emplId,
+            currentUser: '',
             loading: false
 
         }
@@ -33,6 +33,9 @@ export default {
         daily, // 相当于 entry: entry
         history,
         board
+    },
+    mounted:function () {
+      this.currentUser = _user.emplId;
     },
     methods:{
       submit:function(param){

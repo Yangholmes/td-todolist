@@ -62,6 +62,7 @@ export default {
     name: 'daily',
     mounted: function() {
         // `this` 指向 vm 实例
+        this.currentUser =  _user.emplId;
         this.$emit('loadingChange',true);
         let currentDate = new Date();
         this.createDate = currentDate.getFullYear()+'-'+(currentDate.getMonth()+1)+'-'+currentDate.getDate();
@@ -117,7 +118,7 @@ export default {
             ccUsers:[],
             ccUserIds:[],
             attId:-2,//初始状态，-1初始化失败，>=0则为id
-            currentUser:_user.emplId,
+            currentUser:"",
         };
     },
     methods: {
@@ -173,7 +174,7 @@ export default {
                 }else{
                   url = 'http://192.168.4.16/dingding/td-todolist/php/daily/daily-update.php'
                   param = {
-                      attendance: {id:this.attId},
+                      attendance: {id:this.attId,attendance:att},
                       dailys: this.dailys,
                       dailyCc: this.ccUserIds
                   };

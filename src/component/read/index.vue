@@ -33,7 +33,7 @@ export default {
       historys: [],
       other: null,
       watchOtherPopupVisible: false,
-      currentUser: _user.emplId,
+      currentUser: '',
       loading:true,
       selectDate: new Date().getFullYear() + '-' + (new Date().getMonth()+1) + '-' + new Date().getDate(),
       isloadMore:true
@@ -45,6 +45,7 @@ export default {
     watchOtherPopup
   },
   mounted () {
+    this.currentUser = _user.emplId;
     let otherUser = localStorage.getItem('otherUser'),
         otherDate = localStorage.getItem('otherDate');
     if(otherDate&&otherUser){
