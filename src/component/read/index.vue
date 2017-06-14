@@ -14,7 +14,10 @@
     </div>
     <!-- 日志 -->
     <history  v-for="(item,index) in historys" :key="index" :history="item"></history>
-    <div v-if="selectDate.length == 0" style="text-align:center;color: #adadad;font-size: .8em; height: 2em; line-height: 2em; margin: 1em auto">
+    <div v-if="!historys.length" class="read-component-info">
+      纪录为空。。。
+    </div>
+    <div v-if="isloadMore" class="read-component-info">
       <span @click="loadMore">点击加载</span>
     </div>
   </div>
@@ -32,7 +35,8 @@ export default {
       watchOtherPopupVisible: false,
       currentUser: _user.emplId,
       loading:true,
-      selectDate: new Date().getFullYear() + '-' + (new Date().getMonth()+1) + '-' + new Date().getDate()
+      selectDate: new Date().getFullYear() + '-' + (new Date().getMonth()+1) + '-' + new Date().getDate(),
+      isloadMore:true
     }
   },
   components: {
@@ -61,7 +65,9 @@ export default {
     },
 
     watchSelf () {
-
+      this.currentUser = _user.emplId;
+      this.historysLoad();
+      this.isloadMore = true;
     },
     popupWatchOther () {
       this.watchOtherPopupVisible = !this.watchOtherPopupVisible;
@@ -72,6 +78,7 @@ export default {
 
       this.currentUser=other ? other.user.emplId : _user.userid;
       this.selectDate=other ? other.date : new Date().getFullYear() + '-' + (new Date().getMonth()+1) + '-' + new Date().getDate();
+      this.isloadMore=false;
       this.selectARecord();
     },
     historysLoad: function(){
@@ -185,5 +192,13 @@ hr{
   width: 100%;
   height: 1px;
   background: rgba(120, 120, 120, 0.4);
+}
+.read-component-info{
+  text-align:center;
+  color: #adadad;
+  font-size: .8em;
+  height: 2em;
+  line-height: 2em;
+  margin: 1em auto
 }
 </style>
