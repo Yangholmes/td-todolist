@@ -50,12 +50,14 @@ export default {
     if(otherDate&&otherUser){
       this.other = {user: otherUser, date: otherDate};
       localStorage.clear();
-      this.currentUser=other.user.emplId;
+      this.currentUser = this.other.user;
+      this.selectDate = this.other.date;
     }
     else{
       this.other = null;
     }
-    this.historysLoad();
+    this.selectARecord();
+    localStorage.clear();
   },
   methods:{
     loadMore:function(){
