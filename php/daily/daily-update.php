@@ -1,6 +1,7 @@
 <?php
 require_once( __DIR__.'/../../php/config/server-config.php');
 require_once( __DIR__.'/../../php/lib/yang-lib/yang-class-mysql.php');
+require_once( __DIR__.'/../../php/api/Msg.php');
 
 /**
  * recieve POST data
@@ -14,15 +15,15 @@ $dailyCc    = $_POST['dailyCc'];
 /**
  * instance a new yangMysql class
  */
-$atdQuery = new yangMysql(); $dailyQuery = new yangMysql(); $dailyCcQuery = new yangMysql();
+$atdQuery = new yangMysql(); $dailyQuery = new yangMysql(); $dailyCcQuery = new yangMysql(); $userQuery = new yangMysql();
 $dailyQuery->selectDb(DB_DATABASE); //
-$atdQuery->selectTable("attendance"); $dailyQuery->selectTable("daily"); $dailyCcQuery->selectTable("dailyCc");
+$atdQuery->selectTable("attendance"); $dailyQuery->selectTable("daily"); $dailyCcQuery->selectTable("dailyCc"); $userQuery->selectTable("user");
 
 /**
  * insert new attendance
  */
 $id=$attendance['id'];
-$condition = "id = $id";
+$condition = "`id` = '$id'";
 $attendances = $atdQuery->simpleSelect(null, $condition, null, null);
 if(!count($attendances)){
   $error = '1';
@@ -49,3 +50,21 @@ $response = [
   "errorMsg" => $errorMsg
 ];
 echo json_encode( $response );
+
+
+if($error == '0'){
+  $user = $userQuery->simpleSelect(null, "`emplId` = '".$attendances[0]['user']."'", null, null)[0]['name'];
+  /**
+   * send Msg
+   */
+  $msg = new Msg(null);
+  $respond = $msg->sendMsg([
+  	"title" => $user."的工作看板",
+  	"touser"  => ["03424264076698"],
+  	"message_url" => "http://192.168.4.16/test/todolist/msg-redirect.html?user=03424264076698&date=2017-06-14"."&signature=".randomIdFactory(10),
+  	"image"=> "", // 图片
+  	"rich" => ["num" => '', "unit" => ""],
+  	"content" => "摘要："."\n".$dailys[0]['content']."……\n",
+    "bgcolor" => "ff40B782"
+  ]);
+}

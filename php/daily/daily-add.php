@@ -4,13 +4,14 @@
  */
 require_once( __DIR__.'/../../php/config/server-config.php');
 require_once( __DIR__.'/../../php/lib/yang-lib/yang-class-mysql.php');
+require_once( __DIR__.'/../../php/api/Msg.php');
 
 /**
  * recieve POST data
  */
-$attendance = $_POST['attendance'];
+$attendance  = $_POST['attendance'];
 $dailys      = $_POST['dailys'];
-$dailyCc    = $_POST['dailyCc'];
+$dailyCc     = $_POST['dailyCc'];
 
 // date filter
 
@@ -54,3 +55,23 @@ $response = [
   "errorMsg" => $errorMsg
 ];
 echo json_encode( $response );
+
+/**
+ * [if description]
+ * @var [type]
+ */
+if($error == '0'){
+  /**
+   * send Msg
+   */
+  $msg = new Msg(null);
+  $respond = $msg->sendMsg([
+  	"title" => "",
+  	"touser"  => ["03424264076698"],
+  	"message_url" => "http://www.gdrtc.org/car/page/approval.html?resid=9dJemYZp1I9YGtHgdSK4{1490316119}",
+  	"image"=> "", // 图片
+  	"rich" => "哈哈哈",
+  	"content" => "这是您的新申请这是您的新申请ff4da9eb哈哈哈哈哈",
+    "bgcolor" => "ffff0000"
+  ]);
+}
