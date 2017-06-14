@@ -18,9 +18,9 @@ $dailyCc     = $_POST['dailyCc'];
 /**
  * instance a new yangMysql class
  */
-$atdQuery = new yangMysql(); $dailyQuery = new yangMysql(); $dailyCcQuery = new yangMysql();
+$atdQuery = new yangMysql(); $dailyQuery = new yangMysql(); $dailyCcQuery = new yangMysql(); $userQuery = new yangMysql();
 $dailyQuery->selectDb(DB_DATABASE); //
-$atdQuery->selectTable("attendance"); $dailyQuery->selectTable("daily"); $dailyCcQuery->selectTable("dailyCc");
+$atdQuery->selectTable("attendance"); $dailyQuery->selectTable("daily"); $dailyCcQuery->selectTable("dailyCc"); $userQuery->selectTable("user");
 
 /**
  * insert new attendance
@@ -57,21 +57,21 @@ $response = [
 echo json_encode( $response );
 
 /**
- * [if description]
- * @var [type]
+ * [发钉钉企业消息]
  */
 if($error == '0'){
+  $user = $userQuery->simpleSelect(null, "`emplId` = '".$attendance['user']."'", null, null)[0]['name'];
   /**
    * send Msg
    */
   $msg = new Msg(null);
   $respond = $msg->sendMsg([
-  	"title" => "",
+  	"title" => $user."的工作看板",
   	"touser"  => ["03424264076698"],
-  	"message_url" => "http://www.gdrtc.org/car/page/approval.html?resid=9dJemYZp1I9YGtHgdSK4{1490316119}",
+  	"message_url" => SERVER_HOST."/msg-redirect.html?user=03424264076698&date=2017-06-14"."&signature=".randomIdFactory(10),
   	"image"=> "", // 图片
-  	"rich" => "哈哈哈",
-  	"content" => "这是您的新申请这是您的新申请ff4da9eb哈哈哈哈哈",
-    "bgcolor" => "ffff0000"
+  	"rich" => ["num" => '', "unit" => ""],
+  	"content" => "摘要："."\n".$dailys[0]['content']."\n……\n",
+    "bgcolor" => "ff40B782"
   ]);
 }

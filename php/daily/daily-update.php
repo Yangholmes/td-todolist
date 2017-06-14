@@ -51,7 +51,9 @@ $response = [
 ];
 echo json_encode( $response );
 
-
+/**
+ * [发钉钉企业消息]
+ */
 if($error == '0'){
   $user = $userQuery->simpleSelect(null, "`emplId` = '".$attendances[0]['user']."'", null, null)[0]['name'];
   /**
@@ -61,10 +63,10 @@ if($error == '0'){
   $respond = $msg->sendMsg([
   	"title" => $user."的工作看板",
   	"touser"  => ["03424264076698"],
-  	"message_url" => "http://192.168.4.16/test/todolist/msg-redirect.html?user=03424264076698&date=2017-06-14"."&signature=".randomIdFactory(10),
+  	"message_url" => SERVER_HOST."/msg-redirect.html?user=03424264076698&date=2017-06-14"."&signature=".randomIdFactory(10),
   	"image"=> "", // 图片
   	"rich" => ["num" => '', "unit" => ""],
-  	"content" => "摘要："."\n".$dailys[0]['content']."……\n",
+  	"content" => "摘要："."\n".$dailys[0]['content']."\n……\n",
     "bgcolor" => "ff40B782"
   ]);
 }
