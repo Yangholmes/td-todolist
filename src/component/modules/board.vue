@@ -14,7 +14,7 @@
               <div class="task-info">
                 <p class="create-date">创建日期：<span>{{task.createDate}}</span></p>
                 <p class="schedule-date">计划日期：<span>{{task.scheduleDate}}</span></p>
-                <div class="rate" v-if="task.status == 1">
+                <div class="rate" v-if="task.status == 1"  @touchend="rate">
                   <el-rate v-model="task.rate" :colors="['#99A9BF', '#F7BA2A', '#FF9900']">
                   </el-rate>
                 </div>
@@ -127,6 +127,9 @@ export default {
     },
     cancelTask (task) {
       this.endTask(3, task);
+    },
+    rate () {
+      this.$message({ showClose: true, message: '评级功能尚未开放', type: 'warning' });
     },
     closeTaskDialog () {
       this.taskPopupShow = false;
