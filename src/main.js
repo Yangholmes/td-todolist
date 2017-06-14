@@ -34,8 +34,8 @@ Vue.prototype.$message = Message
 import routes from './routes.js'
 const router = new VueRouter({
   mode: 'history',
-  // base: 'test/todolist',
-  base: __dirname,
+  base: 'test/todolist',
+  // base: __dirname,
   routes // （缩写）相当于 routes: routes
 })
 

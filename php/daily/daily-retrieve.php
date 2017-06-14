@@ -22,16 +22,25 @@ $dailyQuery->selectTable("daily");
 $condition = "user = '$user' AND createDate = '$createDate'";
 $attendances = $atdQuery->simpleSelect(null, $condition, null, null);
 $dailys = [];
-if(count($attendances)){
-	$attendanceId = $attendances[0]['id'];
-	$condition2 = "attendance = '$attendanceId'";
-	$dailys = $dailyQuery->simpleSelect(null, $condition2, null, null);
-
-}
-
-if(!(count($attendances) && count($dailys))){
+if($attendances === false){
   $error = '1';
   $errorMsg = '查询失败或纪录为空';
+}else{
+  $error = '0';
+  if(count($attendances)){
+  	$attendanceId = $attendances[0]['id'];
+  	$condition2 = "attendance = '$attendanceId'";
+  	$dailys = $dailyQuery->simpleSelect(null, $condition2, null, null);
+    $errorMsg = '';
+  }
+  else{
+		  $errorMsg = '查询纪录为空';
+		}
+}
+
+
+if(!(count($attendances) && count($dailys))){
+
 }else{
 	$error = '0';
   $errorMsg = '';

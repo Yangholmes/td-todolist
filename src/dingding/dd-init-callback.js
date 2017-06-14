@@ -3,7 +3,7 @@ import Yang from 'yangjs'
 
 ((global, ddInit) => {
   const yang = new Yang();
-  yang.ajax('http://localhost/dingding/td-todolist/php/verification/auth.php', {'dataType': 'application/json'}).then((res)=>{
+  yang.ajax('http://192.168.4.16/dingding/td-todolist/php/verification/auth.php', {'dataType': 'application/json'}).then((res)=>{
     // 预处理response
     ddInit(global, JSON.parse(res.response));
   }, (res)=>{

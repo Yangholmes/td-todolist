@@ -65,7 +65,7 @@ export default {
         this.$emit('loadingChange',true);
         let currentDate = new Date();
         this.createDate = currentDate.getFullYear()+'-'+(currentDate.getMonth()+1)+'-'+currentDate.getDate();
-        var url = 'http://localhost/td-todolist/php/daily/daily-retrieve.php'
+        var url = 'http://192.168.4.16/dingding/td-todolist/php/daily/daily-retrieve.php'
         var param = {
             user: this.currentUser,
             createDate:this.createDate
@@ -117,7 +117,7 @@ export default {
             ccUsers:[],
             ccUserIds:[],
             attId:0,
-            currentUser:_uer.empId,
+            currentUser:_user.emplId,
         };
     },
     methods: {
@@ -160,14 +160,14 @@ export default {
               var url;
               var param;
               if(this.attId==0){
-                url = 'http://localhost/td-todolist/php/daily/daily-add.php'
+                url = 'http://192.168.4.16/dingding/td-todolist/php/daily/daily-add.php'
                 param = {
                     attendance: {attendance:att,user:this.currentUser,createDate:this.createDate},
                     dailys: this.dailys,
                     dailyCc: this.ccUserIds
                 };
               }else{
-                url = 'http://localhost/td-todolist/php/daily/daily-update.php'
+                url = 'http://192.168.4.16/dingding/td-todolist/php/daily/daily-update.php'
                 param = {
                     attendance: {id:this.attId},
                     dailys: this.dailys,
@@ -213,8 +213,8 @@ export default {
                local: "false", // 是否显示本地联系人，默认false
                onSuccess: function(data) {
                  // todo
-                 this.ccUsers.push(data);
-                 this.ccUserIds.push({user:data.empId});
+                 this.ccUsers.push(data[0]);
+                 this.ccUserIds.push({user:data[0].emplId});
                },
                onFail: function(err) {
                  // todo

@@ -24,7 +24,7 @@ export default {
         return {
             historys: [],
             isUpdate: true,
-            currentUser: _uer.empId,
+            currentUser: _user.emplId,
             loading: false
 
         }
@@ -61,7 +61,7 @@ export default {
         else{
           param={user:this.currentUser,offset:0};
         }
-        var url = 'http://localhost/td-todolist/php/daily/daily-loadhistory.php'
+        var url = 'http://192.1168.4.16/dingding/td-todolist/php/daily/daily-loadhistory.php'
       this.$http.post(url, param, {
           emulateJSON: true,
           headers: {

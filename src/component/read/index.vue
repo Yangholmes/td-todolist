@@ -27,31 +27,12 @@ import watchOtherPopup from '../modules/watch-other-popup.vue'
 export default {
   data () {
     return {
-<<<<<<< HEAD
       historys: [],
       other: null,
       watchOtherPopupVisible: false,
-      currentUser:_uer.empId,
+      currentUser: _user.emplId,
       loading:true,
-      selectDate:''
-=======
-      other: null,
-      historys: [{attendance:{
-          id:'1',
-          createDate: '2017/5/5',
-          attendance: ['1'],
-
-      },dailys: [{
-          content: '11111',
-          status: 1
-      },
-      {
-          content: '2222',
-          status: 0
-      }]}
-    ],
-    watchOtherPopupVisible: false,
->>>>>>> 78ce2a6d13472c99b25ce5c3b07c511b3d4c5859
+      selectDate: new Date().getFullYear() + '-' + (new Date().getMonth()+1) + '-' + new Date().getDate()
     }
   },
   components: {
@@ -65,7 +46,7 @@ export default {
     if(otherDate&&otherUser){
       this.other = {user: otherUser, date: otherDate};
       localStorage.clear();
-      this.currentUser=other.user.empId;
+      this.currentUser=other.user.emplId;
     }
     else{
       this.other = null;
@@ -86,8 +67,9 @@ export default {
     watchOther (other) {
       this.watchOtherPopupVisible = false;
       this.other = other;
-      this.currentUser=other.user.empId;
-      this.selectDate=other.date;
+
+      this.currentUser=other ? other.user.emplId : _user.userid;
+      this.selectDate=other ? other.date : new Date().getFullYear() + '-' + (new Date().getMonth()+1) + '-' + new Date().getDate();
       this.selectARecord();
     },
     historysLoad: function(){
@@ -99,7 +81,7 @@ export default {
       else{
         param={user:this.currentUser,offset:0};
       }
-      var url = 'http://localhost/td-todolist/php/daily/daily-loadhistory.php'
+      var url = 'http://192.168.4.16/dingding/td-todolist/php/daily/daily-loadhistory.php'
     this.$http.post(url, param, {
         emulateJSON: true,
         headers: {
@@ -124,11 +106,12 @@ export default {
       });
     },
     selectARecord: function(){
-      var url = 'http://localhost/td-todolist/php/daily/daily-retrieve.php'
+      var url = 'http://192.168.4.16/dingding/td-todolist/php/daily/daily-retrieve.php'
       var param = {
           user: this.currentUser,
           createDate:this.selectDate
       };
+      console.log(param);
       this.loading=true;
     this.$http.post(url, param, {
         emulateJSON: true,
@@ -136,12 +119,19 @@ export default {
             'Content-Type': 'enctype="application/x-www-form-urlencoded; charset=utf-8"'
         }
     }).then((response)=>{
+      this.historys=[];//清空历史纪录
       if(response.data.error == 0){
-        this.historys.splice(0,this.historys.length);//清空历史纪录
-        this.historys.push(results[i]);
+        console.log("11111111111"+response.data.attendance.attendance);
+        if(!response.data.attendance.attendance){
+          this.$message({message: '已经没有纪录了哦',type: 'warning'});
+        }else{
+          response.data.attendance.attendance = response.data.attendance.attendance.split(",");
+          this.historys.push(response.data);
+        }
       }
       this.loading=false;
     }, (response)=>{
+      this.historys=[];//清空历史纪录
         this.loading=false;
         this.$message.error({showClose: true, message: '日志查询失败!'});
       });
