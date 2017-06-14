@@ -24,7 +24,7 @@ $attendances = $atdQuery->simpleSelect(null, $condition, null, null);
 $dailys = [];
 if($attendances === false){
   $error = '1';
-  $errorMsg = '查询失败或纪录为空';
+  $errorMsg = '查询失败';
 }else{
   $error = '0';
   if(count($attendances)){

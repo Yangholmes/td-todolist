@@ -121,7 +121,6 @@ export default {
     }).then((response)=>{
       this.historys=[];//清空历史纪录
       if(response.data.error == 0){
-        console.log("11111111111"+response.data.attendance.attendance);
         if(!response.data.attendance.attendance){
           this.$message({message: '已经没有纪录了哦',type: 'warning'});
         }else{

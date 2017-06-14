@@ -60,7 +60,7 @@
 <script>
 export default {
     name: 'daily',
-    created: function() {
+    mounted: function() {
         // `this` 指向 vm 实例
         this.$emit('loadingChange',true);
         let currentDate = new Date();
@@ -77,13 +77,13 @@ export default {
               'Content-Type': 'enctype="application/x-www-form-urlencoded; charset=utf-8"'
           }
       }).then((response)=>{
-        if(response.data.error == 0){
+        if(response.data.error == 0 && response.data.attendance.attendance){
           this.$emit('dailySubmit',{response:response.data,attId:this.attId});
           this.attId = response.data.attendance.id;
         }
         this.$emit('loadingChange',false);
       }, (response)=>{
-
+          this.attId = -1;
           this.$emit('loadingChange',false);
           this.$message.error({showClose: true, message: '日志模块通信失败!'});
         });
@@ -116,7 +116,7 @@ export default {
             },
             ccUsers:[],
             ccUserIds:[],
-            attId:0,
+            attId:-2,//初始状态，-1初始化失败，>=0则为id
             currentUser:_user.emplId,
         };
     },
@@ -155,44 +155,47 @@ export default {
         },
         dailySubmit: function(checkForm) {
             if (this.attendance.length) {
-              this.ccUserIds.push({user:1});//加上固定的抄送人
-              let att=this.attendance.toString();
-              var url;
-              var param;
-              if(this.attId==0){
-                url = 'http://192.168.4.16/dingding/td-todolist/php/daily/daily-add.php'
-                param = {
-                    attendance: {attendance:att,user:this.currentUser,createDate:this.createDate},
-                    dailys: this.dailys,
-                    dailyCc: this.ccUserIds
-                };
+              if(this.attId == -1){
+                this.$message.error('初始化失败，请退出重新进入');
               }else{
-                url = 'http://192.168.4.16/dingding/td-todolist/php/daily/daily-update.php'
-                param = {
-                    attendance: {id:this.attId},
-                    dailys: this.dailys,
-                    dailyCc: this.ccUserIds
-                };
-              }
-              this.$http.post(url, param, {
-                  emulateJSON: true,
-                  headers: {
-                      'Content-Type': 'enctype="application/x-www-form-urlencoded; charset=utf-8"'
-                  }
-              }).then((response)=>{
-                if(response.data.error == 0){
-                  this.$emit('dailySubmit',{response:response.data,attId:this.attId});
-                  this.attId = response.data.attendance.id;
+                this.ccUserIds.push({user:1});//加上固定的抄送人
+                let att=this.attendance.toString();
+                var url;
+                var param;
+                if(this.attId==-2){
+                  url = 'http://192.168.4.16/dingding/td-todolist/php/daily/daily-add.php'
+                  param = {
+                      attendance: {attendance:att,user:this.currentUser,createDate:this.createDate},
+                      dailys: this.dailys,
+                      dailyCc: this.ccUserIds
+                  };
+                }else{
+                  url = 'http://192.168.4.16/dingding/td-todolist/php/daily/daily-update.php'
+                  param = {
+                      attendance: {id:this.attId},
+                      dailys: this.dailys,
+                      dailyCc: this.ccUserIds
+                  };
                 }
+                this.$http.post(url, param, {
+                    emulateJSON: true,
+                    headers: {
+                        'Content-Type': 'enctype="application/x-www-form-urlencoded; charset=utf-8"'
+                    }
+                }).then((response)=>{
+                  if(response.data.error == 0){
+                    this.$emit('dailySubmit',{response:response.data,attId:this.attId});
+                    this.attId = response.data.attendance.id;
+                  }
+                }, (response)=>{
+                    this.$message.error({showClose: true, message: '日志模块通信失败!'});
+                  });
 
+                  this.$message.success('添加日志成功！');
+                  this.dailys = [];
+                  this.ccUserIds = [];
+              }
 
-              }, (response)=>{
-                  this.$message.error({showClose: true, message: '日志模块通信失败!'});
-                });
-
-                this.$message.success('添加日志成功！');
-                this.dailys = [];
-                this.ccUserIds = [];
             } else {
                 this.$message.error('请选择考勤');
                 return false;

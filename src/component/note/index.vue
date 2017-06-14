@@ -39,7 +39,7 @@ export default {
         //字符串转字符串数组
         var response=param.response;
         this.isUpdate=false;
-        if(param.attId==0){
+        if(param.attId==-2){
           response.attendance.attendance = response.attendance.attendance.split(",");
           this.historys.push(response);
         }
