@@ -177,6 +177,7 @@ export default {
                       dailyCc: this.ccUserIds
                   };
                 }
+                this.$emit('loadingChange',true);
                 this.$http.post(url, param, {
                     emulateJSON: true,
                     headers: {
@@ -184,14 +185,15 @@ export default {
                     }
                 }).then((response)=>{
                   if(response.data.error == 0){
+                    this.$emit('loadingChange',false);
+                    this.$message.success('添加日志成功！');
                     this.$emit('dailySubmit',{response:response.data,attId:this.attId});
                     this.attId = response.data.attendance.id;
                   }
                 }, (response)=>{
+                    this.$emit('loadingChange',false);
                     this.$message.error({showClose: true, message: '日志模块通信失败!'});
                   });
-
-                  this.$message.success('添加日志成功！');
                   this.dailys = [];
                   this.ccUserIds = [];
               }
