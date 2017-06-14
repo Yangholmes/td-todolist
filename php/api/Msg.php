@@ -16,7 +16,7 @@ class Msg{
   // message template
   private $msg = [
 				 "touser"  => "",
-				 "agentid" => "76647142",
+				 "agentid" => "76417678",
 				 "msgtype" => "oa",
   				 "oa" =>	[
 								"message_url" => "",
@@ -28,7 +28,7 @@ class Msg{
 									"content" => "",
 									"author" => "© 通导研发 ",
 									"image"=> "",
-									"rich" => [ "num" => "", "unit" => "的申请" ],
+									"rich" => [ "num" => "", "unit" => "" ],
 								]
 							]
 				];
@@ -71,14 +71,14 @@ class Msg{
    *  @param touser: [],
    *  @param message_url: string,
    *  @param image: string,
-   *  @param rich: string,
+   *  @param rich: [ "num" => "", "unit" => "" ],
    *  @param content: string
    * Yangholmes
    */
   private function _corpMsgFilter($msg){
     if( !is_array($msg) )
       return false;
-    if( !is_array($msg["touser"]) || !is_string($msg["title"]) || !is_string($msg["image"]) || !is_string($msg["rich"]) || !is_string($msg["content"]) )
+    if( !is_array($msg["touser"]) || !is_string($msg["title"]) || !is_string($msg["image"]) || !is_array($msg["rich"]) || !is_string($msg["content"]) )
       return false;
 
     $this->msg['touser']                    = join( '|', $msg['touser'] );
@@ -87,9 +87,10 @@ class Msg{
     $this->msg['oa']['body']['title']       = $msg['title'];
     $this->msg['oa']['body']['image']       = $msg['image'];
     $this->msg['oa']['body']['content']     = $msg['content'];
-    $this->msg['oa']['body']['rich']['num'] = $msg['rich'];
+    $this->msg['oa']['body']['rich'] = $msg['rich'];
 
     $this->conversationMsg = json_encode($this->msg);
+    // echo $this->conversationMsg;
     return true;
   }
 
