@@ -44,9 +44,13 @@ else{
     $dailyCc[$i]['attendance'] = $attendance['id'];
     $dailyCcQuery->insert($dailyCc[$i]);
   }
+  $id=$attendance['id'];
+  $dailys = $dailyQuery->simpleSelect(null, "attendance = '$id'", null, null);
+  $dailyCc = $dailyCcQuery->simpleSelect(null, "attendance = '$id'", null, null);
   $error = '0';
   $errorMsg = '';
 }
+
 $response = [
   "attendance"=> $attendance,
   "dailys"=> $dailys,

@@ -23,9 +23,11 @@ $atdQuery->selectTable("attendance"); $dailyQuery->selectTable("daily"); $dailyC
  * insert new attendance
  */
 $id=$attendance['id'];
+$att=$attendance['attendance']
+$result = $atdQuery->query("update attendance t set t.attendance = '$att' where t.id = '$id';");
 $condition = "`id` = '$id'";
 $attendances = $atdQuery->simpleSelect(null, $condition, null, null);
-if(!count($attendances)){
+if(!count($attendances) && !$result){
   $error = '1';
   $errorMsg = '新增失败';
 }
@@ -42,6 +44,8 @@ else{
   $error = '0';
   $errorMsg = '';
 }
+$dailys = $dailyQuery->simpleSelect(null, "attendance = '$id'", null, null);
+$dailyCc = $dailyCcQuery->simpleSelect(null, "attendance = '$id'", null, null);
 $response = [
   "attendance"=> count($attendances)?$attendances[0]:'',
   "dailys"=> count($dailys)?$dailys:'',
