@@ -62,11 +62,12 @@ export default {
     name: 'daily',
     created: function() {
         // `this` 指向 vm 实例
+        this.$emit('loadingChange',true);
         let currentDate = new Date();
         this.createDate = currentDate.getFullYear()+'-'+(currentDate.getMonth()+1)+'-'+currentDate.getDate();
         var url = 'http://localhost/td-todolist/php/daily/daily-retrieve.php'
         var param = {
-            user: 'mj',
+            user: this.currentUser,
             createDate:this.createDate
         };
 
@@ -76,12 +77,14 @@ export default {
               'Content-Type': 'enctype="application/x-www-form-urlencoded; charset=utf-8"'
           }
       }).then((response)=>{
-        console.log(response.data);
         if(response.data.error == 0){
           this.$emit('dailySubmit',{response:response.data,attId:this.attId});
           this.attId = response.data.attendance.id;
         }
+        this.$emit('loadingChange',false);
       }, (response)=>{
+
+          this.$emit('loadingChange',false);
           this.$message.error({showClose: true, message: '日志模块通信失败!'});
         });
 
@@ -114,6 +117,7 @@ export default {
             ccUsers:[],
             ccUserIds:[],
             attId:0,
+            currentUser:_uer.empId,
         };
     },
     methods: {
@@ -123,7 +127,6 @@ export default {
           this.editIndex=-1;//每次打开判断为增加纪录而不是编辑
         },
         addToCard: function(formName) {
-          console.log(formName);
             this.$refs[formName].validate((valid) => {
                 if (valid) {
                     let i = {
@@ -159,7 +162,7 @@ export default {
               if(this.attId==0){
                 url = 'http://localhost/td-todolist/php/daily/daily-add.php'
                 param = {
-                    attendance: {attendance:att,user:"mj",createDate:this.createDate},
+                    attendance: {attendance:att,user:this.currentUser,createDate:this.createDate},
                     dailys: this.dailys,
                     dailyCc: this.ccUserIds
                 };
@@ -177,7 +180,6 @@ export default {
                       'Content-Type': 'enctype="application/x-www-form-urlencoded; charset=utf-8"'
                   }
               }).then((response)=>{
-                console.log(response.data);
                 if(response.data.error == 0){
                   this.$emit('dailySubmit',{response:response.data,attId:this.attId});
                   this.attId = response.data.attendance.id;
@@ -197,30 +199,28 @@ export default {
             }
         },
         openCCPicker: function(){
-          // 引入钉钉后可用
-          // dd.biz.contact.choose({
-          //      startWithDepartmentId: -1, //-1表示打开的通讯录从自己所在部门开始展示, 0表示从企业最上层开始，(其他数字表示从该部门开始:暂时不支持)
-          //      multiple: false, //是否多选： true多选 false单选； 默认true
-          //      users: null, //默认选中的用户列表，userid；成功回调中应包含该信息
-          //      disabledUsers: null, // 不能选中的用户列表，员工userid
-          //      corpId: window._config.corpId, //企业id
-          //      // max: , //人数限制，当multiple为true才生效，可选范围1-1500
-          //      limitTips: "挑太多啦！", //超过人数限制的提示语可以用这个字段自定义
-          //      isNeedSearch: true, // 是否需要搜索功能
-          //      title: "挑个人呗~", // 如果你需要修改选人页面的title，可以在这里赋值
-          //      local: "false", // 是否显示本地联系人，默认false
-          //      onSuccess: function(data) {
-          //        // todo
-          //        this.ccUsers.push(data);
-          //      },
-          //      onFail: function(err) {
-          //        // todo
-          //        this.$message.error('非常抱歉！您的通信录打不开。。。');
-          //      }
-          // });
-          this.ccUsers.push({user:2, name:"卢威"});
-          this.ccUserIds.push({user:2});
-          console.log(this.ccUsers);
+          //引入钉钉后可用
+          dd.biz.contact.choose({
+               startWithDepartmentId: -1, //-1表示打开的通讯录从自己所在部门开始展示, 0表示从企业最上层开始，(其他数字表示从该部门开始:暂时不支持)
+               multiple: false, //是否多选： true多选 false单选； 默认true
+               users: null, //默认选中的用户列表，userid；成功回调中应包含该信息
+               disabledUsers: null, // 不能选中的用户列表，员工userid
+               corpId: window._config.corpId, //企业id
+               // max: , //人数限制，当multiple为true才生效，可选范围1-1500
+               limitTips: "挑太多啦！", //超过人数限制的提示语可以用这个字段自定义
+               isNeedSearch: true, // 是否需要搜索功能
+               title: "挑个人呗~", // 如果你需要修改选人页面的title，可以在这里赋值
+               local: "false", // 是否显示本地联系人，默认false
+               onSuccess: function(data) {
+                 // todo
+                 this.ccUsers.push(data);
+                 this.ccUserIds.push({user:data.empId});
+               },
+               onFail: function(err) {
+                 // todo
+                 this.$message.error('非常抱歉！您的通信录打不开。。。');
+               }
+          });
         },
         deleteCCPicker: function(index){
           this.ccUsers.splice(index,1);
