@@ -65,13 +65,14 @@ echo json_encode( $response );
  */
 if($error == '0'){
   $user = $userQuery->simpleSelect(null, "`emplId` = '".$attendance['user']."'", null, null)[0]['name'];
+
   /**
    * send Msg
    */
   $msg = new Msg(null);
   $respond = $msg->sendMsg([
   	"title" => $user."的工作看板",
-  	"touser"  => ["03424264076698"],
+  	"touser"  => array_map(function($user){return $user['user'];}, $dailyCc),
   	"message_url" => SERVER_HOST."/msg-redirect.html?user=03424264076698&date=2017-06-14"."&signature=".randomIdFactory(10),
   	"image"=> "", // 图片
   	"rich" => ["num" => '', "unit" => ""],

@@ -23,8 +23,8 @@ $atdQuery->selectTable("attendance"); $dailyQuery->selectTable("daily"); $dailyC
  * insert new attendance
  */
 $id=$attendance['id'];
-$att=$attendance['attendance']
-$result = $atdQuery->query("update attendance t set t.attendance = '$att' where t.id = '$id';");
+$att=$attendance['attendance'];
+$result = $atdQuery->query("update attendance set `attendance` = '$att' where id = '$id'");
 $condition = "`id` = '$id'";
 $attendances = $atdQuery->simpleSelect(null, $condition, null, null);
 if(!count($attendances) && !$result){
@@ -66,7 +66,7 @@ if($error == '0'){
   $msg = new Msg(null);
   $respond = $msg->sendMsg([
   	"title" => $user."的工作看板",
-  	"touser"  => ["03424264076698"],
+  	"touser"  => array_map(function($user){return $user['user'];}, $dailyCc),
   	"message_url" => SERVER_HOST."/msg-redirect.html?user=03424264076698&date=2017-06-14"."&signature=".randomIdFactory(10),
   	"image"=> "", // 图片
   	"rich" => ["num" => '', "unit" => ""],

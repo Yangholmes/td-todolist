@@ -94,7 +94,7 @@ export default {
     postData (method) {
       let that = this,
           task = {},
-          url = method ? 'http://192.168.4.16/dingding/td-todolist/php/task/task-add.php' : 'http://192.168.4.16/dingding/td-todolist/php/task/task-update.php';
+          url = method ? HOST+'/php/task/task-add.php' : HOST+'/php/task/task-update.php';
       for( let t in this.thisTask ){
         if( typeof this.thisTask[t] != 'function' && t!='toolbar' )
           // console.log( this.thisTask[r].toString() );

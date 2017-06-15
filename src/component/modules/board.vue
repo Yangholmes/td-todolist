@@ -50,7 +50,7 @@ export default {
   props: ['operate', 'other'],
   mounted () {
     if(!this.other)
-      this.retrieveData("03424264076698");
+      this.retrieveData(_user.emplId);
     else
       this.retrieveData(this.other.user);
   },
@@ -65,7 +65,7 @@ export default {
         finishDate: null,
         rate: null,
         toolbar: false,
-        user: "03424264076698",
+        user: _user.emplId,
         status: 0
       },
       tasks: []
@@ -169,7 +169,11 @@ export default {
       });
     },
     retrieveData (user) {
-      this.$http.get('http://192.168.4.16/dingding/td-todolist/php/task/task-retrieve.php?user='+user).then( (respones)=>{
+      if(!user){
+        this.$message.error({showClose: true, message: '参数出错!'});
+        return false;
+      }
+      this.$http.get(HOST+'/php/task/task-retrieve.php?user='+user).then( (respones)=>{
         this.tasks = respones.data.tasks.map((task)=>{
           task.toolbar = false;
           return task
@@ -181,7 +185,7 @@ export default {
     },
     postData (method, data, callback) {
       let that = this,
-          url = method ? 'http://192.168.4.16/dingding/td-todolist/php/task/task-update.php' : 'http://192.168.4.16/dingding/td-todolist/php/task/task-delete.php';
+          url = method ? HOST+'/php/task/task-update.php' : HOST+'/php/task/task-delete.php';
       this.$http.post(url, data, {
               emulateJSON: true,
               headers: {

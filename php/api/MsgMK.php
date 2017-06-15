@@ -15,22 +15,13 @@ class Msg{
   private $conversationMsg;
   // message template
   private $msg = [
-				 "touser"  => "",
+				 "touser"  => "03424264076698",
 				 "agentid" => "100844581",
-				 "msgtype" => "oa",
-  				 "oa" =>	[
-								"message_url" => "",
-								"head" => [
-									// "bgcolor" => "ff4da9eb",
-									"text" => "", // 向普通会话发送时有效，向企业会话发送时会被替换为微应用的名字
-								],
-								"body" => [
-									"content" => "",
-									"author" => "© 通导研发 ",
-									"image"=> "",
-									"rich" => [ "num" => "", "unit" => "" ],
-								]
-							]
+				 "msgtype" => "markdown",
+				 "markdown" => [
+				 					"title" => "",
+				 					"text" => "",
+				 				],
 				];
 
   /**
@@ -76,18 +67,8 @@ class Msg{
    * Yangholmes
    */
   private function _corpMsgFilter($msg){
-    if( !is_array($msg) )
-      return false;
-    if( !is_array($msg["touser"]) || !is_string($msg["title"]) || !is_string($msg["image"]) || !is_array($msg["rich"]) || !is_string($msg["content"]) )
-      return false;
-
-    $this->msg['touser']                    = join( '|', $msg['touser'] );
-    $this->msg['oa']['message_url']         = $msg['message_url'];
-    $this->msg['oa']['head']['bgcolor']     = $msg['bgcolor']?$msg['bgcolor']:"ff4da9eb";
-    $this->msg['oa']['body']['title']       = $msg['title'];
-    $this->msg['oa']['body']['image']       = $msg['image'];
-    $this->msg['oa']['body']['content']     = $msg['content'];
-    $this->msg['oa']['body']['rich'] = $msg['rich'];
+    $this->msg["markdown"]["title"] = $msg["title"];
+    $this->msg["markdown"]["text"]  = $msg["text"];
 
     $this->conversationMsg = json_encode($this->msg);
     // echo $this->conversationMsg;
@@ -120,12 +101,7 @@ class Msg{
 // $msg = new Msg(null);
 // $respond = $msg->sendMsg([
 // 	"title" => "这是您的新申请",
-// 	"touser"  => ["03424264076698"],
-// 	"message_url" => "http://www.gdrtc.org/car/page/approval.html?resid=9dJemYZp1I9YGtHgdSK4{1490316119}",
-// 	"image"=> "", // 图片
-// 	"rich" => "哈哈哈",
-// 	"content" => "这是您的新申请这是您的新申请ff4da9eb哈哈哈哈哈",
-//   "bgcolor" => "ffff0000"
+// 	"text"  => ""
 // ]);
 
 // echo $respond;

@@ -62,11 +62,11 @@ export default {
     name: 'daily',
     mounted: function() {
         // `this` 指向 vm 实例
-        this.currentUser =  _user.emplId;
+        this.currentUser = _user.emplId;
         this.$emit('loadingChange',true);
         let currentDate = new Date();
         this.createDate = currentDate.getFullYear()+'-'+(currentDate.getMonth()+1)+'-'+currentDate.getDate();
-        var url = 'http://192.168.4.16/dingding/td-todolist/php/daily/daily-retrieve.php'
+        var url = HOST+'/php/daily/daily-retrieve.php'
         var param = {
             user: this.currentUser,
             createDate:this.createDate
@@ -159,20 +159,20 @@ export default {
               if(this.attId == -1){
                 this.$message.error('初始化失败，请退出重新进入');
               }else{
-                // this.ccUserIds.push({user:'03401659233316'}); // 加上固定的抄送人
-                this.ccUserIds.push({user:'03424264076698'}); // 加上固定的抄送人
+                this.ccUserIds.push({user:'03401659233316'}); // 加上固定的抄送人
+                // this.ccUserIds.push({user:'03424264076698'}); // 加上固定的抄送人
                 let att=this.attendance.toString();
                 var url;
                 var param;
                 if(this.attId==-2){
-                  url = 'http://192.168.4.16/dingding/td-todolist/php/daily/daily-add.php'
+                  url = HOST+'/php/daily/daily-add.php'
                   param = {
                       attendance: {attendance:att,user:this.currentUser,createDate:this.createDate},
                       dailys: this.dailys,
                       dailyCc: this.ccUserIds
                   };
                 }else{
-                  url = 'http://192.168.4.16/dingding/td-todolist/php/daily/daily-update.php'
+                  url = HOST+'/php/daily/daily-update.php'
                   param = {
                       attendance: {id:this.attId,attendance:att},
                       dailys: this.dailys,
@@ -206,6 +206,7 @@ export default {
             }
         },
         openCCPicker: function(){
+          let that = this;
           //引入钉钉后可用
           dd.biz.contact.choose({
                startWithDepartmentId: -1, //-1表示打开的通讯录从自己所在部门开始展示, 0表示从企业最上层开始，(其他数字表示从该部门开始:暂时不支持)
@@ -220,12 +221,12 @@ export default {
                local: "false", // 是否显示本地联系人，默认false
                onSuccess: function(data) {
                  // todo
-                 this.ccUsers.push(data[0]);
-                 this.ccUserIds.push({user:data[0].emplId});
+                 that.ccUsers.push(data[0]);
+                 that.ccUserIds.push({user:data[0].emplId});
                },
                onFail: function(err) {
                  // todo
-                 this.$message.error('非常抱歉！您的通信录打不开。。。');
+                 that.$message.error('非常抱歉！您的通信录打不开。。。');
                }
           });
         },

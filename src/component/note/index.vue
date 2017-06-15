@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import daily from '../modules/daily.vue'
+// import daily from '../modules/daily.vue'
 import history from '../modules/history.vue'
 import board from '../modules/board.vue'
 
@@ -30,11 +30,12 @@ export default {
         }
     },
     components: { // 注册组件，这很重要
-        daily, // 相当于 entry: entry
+        daily: (resolve) => require(['../modules/daily.vue'], resolve),
         history,
         board
     },
     mounted:function () {
+      console.log('mounted', new Date());
       this.currentUser = _user.emplId;
     },
     methods:{
@@ -64,7 +65,7 @@ export default {
         else{
           param={user:this.currentUser,offset:0};
         }
-        var url = 'http://192.168.4.16/dingding/td-todolist/php/daily/daily-loadhistory.php'
+        var url = HOST+'/php/daily/daily-loadhistory.php'
       this.$http.post(url, param, {
           emulateJSON: true,
           headers: {

@@ -66,6 +66,7 @@ export default {
     },
 
     watchSelf () {
+      this.historys = [];
       this.currentUser = _user.emplId;
       this.historysLoad();
       this.isloadMore = true;
@@ -91,7 +92,7 @@ export default {
       else{
         param={user:this.currentUser,offset:0};
       }
-      var url = 'http://192.168.4.16/dingding/td-todolist/php/daily/daily-loadhistory.php'
+      var url = HOST+'/php/daily/daily-loadhistory.php'
     this.$http.post(url, param, {
         emulateJSON: true,
         headers: {
@@ -116,7 +117,7 @@ export default {
       });
     },
     selectARecord: function(){
-      var url = 'http://192.168.4.16/dingding/td-todolist/php/daily/daily-retrieve.php'
+      var url = HOST+'/php/daily/daily-retrieve.php'
       var param = {
           user: this.currentUser,
           createDate:this.selectDate

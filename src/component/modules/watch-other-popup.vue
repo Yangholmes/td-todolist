@@ -129,7 +129,9 @@ header.watch-other-popup-header h1{
   width: 5em;
 }
 .input-field input{
-  border: none;
+  border: 1px solid gray;
+  border-radius: 3px;
+  padding: 1px;
   background: rgba(255, 255, 255, 0);
   outline: none;
   width: calc( 100% - 6em );
@@ -137,7 +139,7 @@ header.watch-other-popup-header h1{
 .picker{
   position: absolute;
   width: calc( 100% - 2em ); height: 1.5em;
-  background: rgba(100, 100, 100, .5);
+  background: rgba(100, 100, 100, 0);
 }
 
 footer.watch-other-popup-footer{

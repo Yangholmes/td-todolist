@@ -6,9 +6,10 @@
  * _user    √
  * _car     °
  */
-var HOST = 'http://192.168.4.16/dingding/td-todolist',
-    _user = {}, // user info
-    _config = _config; // dd config
+var _user = {}, // user info
+    _config = _config, // dd config
+    HOST = 'http://www.gdrtc.org/todolist';
+    // HOST = 'http://192.168.4.16/dingding/td-todolist';
 
 /**
  * jsapi权限验证配置
@@ -60,7 +61,7 @@ dd.ready( function() {
     dd.runtime.permission.requestAuthCode({
         corpId: _config.corpId[0],
         onSuccess: function(result) {
-            yang.ajax("./server/verification/get-user-info.php?access_token=" + _config.accessToken + "&code=" + result.code, {dataType: 'json', method: 'GET'})
+            yang.ajax("./php/user/get-user-info.php?access_token=" + _config.accessToken + "&code=" + result.code, {dataType: 'json', method: 'GET'})
                 .then( function(respond) {
                     _user = JSON.parse(respond.response);
                 }, function(respond) {
