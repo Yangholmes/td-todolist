@@ -70,6 +70,7 @@ export default {
       this.currentUser = _user.emplId;
       this.historysLoad();
       this.isloadMore = true;
+      this.other = {user: _user.emplId};
     },
     popupWatchOther () {
       this.watchOtherPopupVisible = !this.watchOtherPopupVisible;

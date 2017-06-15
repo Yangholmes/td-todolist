@@ -170,7 +170,7 @@ export default {
     },
     retrieveData (user) {
       if(!user){
-        this.$message.error({showClose: true, message: '参数出错!'});
+        // this.$message.error({showClose: true, message: '用户参数出错!'});
         return false;
       }
       this.$http.get(HOST+'/php/task/task-retrieve.php?user='+user).then( (respones)=>{
