@@ -66,7 +66,7 @@ export default {
     },
 
     watchSelf () {
-      this.historys=this.historys.splice(0,this.historys.length);//清空历史纪录
+      this.historys.splice(0,this.historys.length);//清空历史纪录
       this.currentUser = _user.emplId;
       this.historysLoad();
       this.isloadMore = true;
@@ -82,6 +82,7 @@ export default {
       this.currentUser=other ? other.user.emplId : _user.userid;
       this.selectDate=other ? other.date : new Date().getFullYear() + '-' + (new Date().getMonth()+1) + '-' + new Date().getDate();
       this.isloadMore=false;
+      this.historys.splice(0,this.historys.length);//清空历史纪录
       this.selectARecord();
     },
     historysLoad: function(){
@@ -131,7 +132,6 @@ export default {
             'Content-Type': 'enctype="application/x-www-form-urlencoded; charset=utf-8"'
         }
     }).then((response)=>{
-      this.historys=this.historys.splice(0,this.historys.length);//清空历史纪录
       if(response.data.error == 0){
         if(!response.data.attendance.attendance){
           this.$message({message: '已经没有纪录了哦',type: 'warning'});
@@ -142,7 +142,6 @@ export default {
       }
       this.loading=false;
     }, (response)=>{
-      this.historys=this.historys.splice(0,this.historys.length);//清空历史纪录
         this.loading=false;
         this.$message.error({showClose: true, message: '日志查询失败!'});
       });
