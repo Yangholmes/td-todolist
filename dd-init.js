@@ -61,12 +61,14 @@ dd.ready( function() {
     dd.runtime.permission.requestAuthCode({
         corpId: _config.corpId[0],
         onSuccess: function(result) {
-          document.getElementById('user-mask').innerHTML = '<p>正在加载</p>';
+          document.getElementById('user-mask').innerHTML = '<p>正在识别身份信息</p>';
             yang.ajax("./php/user/get-user-info.php?access_token=" + _config.accessToken + "&code=" + result.code, {dataType: 'json', method: 'GET'})
                 .then( function(respond) {
                     _user = JSON.parse(respond.response);
-                    document.getElementById('user-mask').innerHTML = '<p>加载成功</p>';
-                    document.getElementById('user-mask').outerHTML = '';
+                    document.getElementById('user-mask').innerHTML = '<p>识别成功</p><p>' + (_user.name?_user.name+' 你好':'？？？') + '</p>';
+                    setTimeout( function(){
+                        document.getElementById('user-mask').outerHTML = ''; 
+                    }, 1000);
                 }, function(respond) {
                     alert('身份验证失败，请重试。');
                     document.getElementsByTagName('body')[0].innerHTML = '<p>身份验证失败，请重试。</p>';
@@ -88,7 +90,7 @@ dd.ready( function() {
      * 标题栏
      */
     dd.biz.navigation.setTitle({
-        title: '控制台',
+        title: '工作看板',
 
     }); // set navigation title
 
@@ -119,6 +121,5 @@ dd.ready( function() {
 });
 
 dd.error(function(err) {
-    console.log('错误信息: ' + JSON.stringify(err));
-    alert('错误信息: ' + JSON.stringify(err));
+    alert('钉钉验证失败，请关闭重试\n如果频繁出现此错误，请联系研发部');
 });

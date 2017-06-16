@@ -45,8 +45,8 @@ else{
     $dailyCcQuery->insert($dailyCc[$i]);
   }
   $id=$attendance['id'];
-  $dailys = $dailyQuery->simpleSelect(null, "attendance = '$id'", null, null);
-  $dailyCc = $dailyCcQuery->simpleSelect(null, "attendance = '$id'", null, null);
+  $dailys = $dailyQuery->simpleSelect(null, "`attendance` = '$id'", null, null);
+  $dailyCc = $dailyCcQuery->simpleSelect(null, "`attendance` = '$id'", null, null);
   $error = '0';
   $errorMsg = '';
 }
@@ -64,19 +64,22 @@ echo json_encode( $response );
  * [发钉钉企业消息]
  */
 if($error == '0'){
-  $user = $userQuery->simpleSelect(null, "`emplId` = '".$attendance['user']."'", null, null)[0]['name'];
+  $user = $userQuery->simpleSelect(null, "`emplId` = '".$attendance['user']."'", null, null)[0];
+
+  // echo json_encode($dailyCc);
 
   /**
    * send Msg
    */
   $msg = new Msg(null);
   $respond = $msg->sendMsg([
-  	"title" => $user."的工作看板",
+  	"title" => $user['name']."的工作看板",
   	"touser"  => array_map(function($user){return $user['user'];}, $dailyCc),
-  	"message_url" => SERVER_HOST."/msg-redirect.html?user=03424264076698&date=2017-06-14"."&signature=".randomIdFactory(10),
+  	"message_url" => SERVER_HOST."/msg-redirect.html?user=".$user['emplId']."&date=".$attendance['createDate']."&signature=".randomIdFactory(10),
   	"image"=> "", // 图片
-  	"rich" => ["num" => '', "unit" => ""],
+  	"rich" => ["num" => '', "unit" => $attendance['createDate']],
   	"content" => "摘要："."\n".$dailys[0]['content']."\n……\n",
     "bgcolor" => "ff40B782"
   ]);
 }
+

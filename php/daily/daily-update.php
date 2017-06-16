@@ -44,8 +44,8 @@ else{
   $error = '0';
   $errorMsg = '';
 }
-$dailys = $dailyQuery->simpleSelect(null, "attendance = '$id'", null, null);
-$dailyCc = $dailyCcQuery->simpleSelect(null, "attendance = '$id'", null, null);
+$dailys = $dailyQuery->simpleSelect(null, "`attendance` = '$id'", null, null);
+$dailyCc = $dailyCcQuery->simpleSelect(null, "`attendance` = '$id'", null, null);
 $response = [
   "attendance"=> count($attendances)?$attendances[0]:'',
   "dailys"=> count($dailys)?$dailys:'',
@@ -59,17 +59,18 @@ echo json_encode( $response );
  * [发钉钉企业消息]
  */
 if($error == '0'){
-  $user = $userQuery->simpleSelect(null, "`emplId` = '".$attendances[0]['user']."'", null, null)[0]['name'];
+  $user = $userQuery->simpleSelect(null, "`emplId` = '".$attendances[0]['user']."'", null, null)[0];
+
   /**
    * send Msg
    */
   $msg = new Msg(null);
   $respond = $msg->sendMsg([
-  	"title" => $user."的工作看板",
+  	"title" => $user['name']."的工作看板",
   	"touser"  => array_map(function($user){return $user['user'];}, $dailyCc),
-  	"message_url" => SERVER_HOST."/msg-redirect.html?user=03424264076698&date=2017-06-14"."&signature=".randomIdFactory(10),
+  	"message_url" => SERVER_HOST."/msg-redirect.html?user=".$user['emplId']."&date=".$attendances[0]['createDate']."&signature=".randomIdFactory(10),
   	"image"=> "", // 图片
-  	"rich" => ["num" => '', "unit" => ""],
+  	"rich" => ["num" => '', "unit" => $attendances[0]['createDate']],
   	"content" => "摘要："."\n".$dailys[0]['content']."\n……\n",
     "bgcolor" => "ff40B782"
   ]);

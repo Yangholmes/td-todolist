@@ -11,7 +11,7 @@
             <el-checkbox label="4" disabled>出差</el-checkbox>
         </el-checkbox-group>
         <div v-for="(o,index) in dailys" :key="index" class="text item">
-            <div class="heading">任务{{ index+1 }} <i v-if="o.status" class="el-icon-check"></i><i v-else class="el-icon-more"></i></div>
+            <div class="heading">任务{{ index+1 }} <i v-if="o.status == '1'" class="el-icon-check"></i><i v-else class="el-icon-more"></i></div>
             <p class="info">{{o.content}}</p>
         </div>
     </el-card>

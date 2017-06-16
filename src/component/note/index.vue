@@ -50,6 +50,7 @@ export default {
         else{
           for(var i=0; i<this.historys.length; i++){
             if(response.attendance.id == this.historys[i].attendance.id){
+              this.historys[i].dailys.splice(0,this.historys[i].dailys.length);
               for(var j=0; j<response.dailys.length; j++)
               this.historys[i].dailys.push(response.dailys[j]);
             }
