@@ -66,7 +66,7 @@ export default {
     },
 
     watchSelf () {
-      this.historys.splice(0,this.historys.length);
+      this.historys.splice(0,this.historys.length);//清空历史纪录
       this.currentUser = _user.emplId;
       this.historysLoad();
       this.isloadMore = true;
@@ -132,7 +132,6 @@ export default {
             'Content-Type': 'enctype="application/x-www-form-urlencoded; charset=utf-8"'
         }
     }).then((response)=>{
-
       if(response.data.error == 0){
         if(!response.data.attendance.attendance){
           this.$message({message: '已经没有纪录了哦',type: 'warning'});
