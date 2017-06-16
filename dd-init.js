@@ -67,7 +67,7 @@ dd.ready( function() {
                     _user = JSON.parse(respond.response);
                     document.getElementById('user-mask').innerHTML = '<p>识别成功</p><p>' + (_user.name?_user.name+' 你好':'？？？') + '</p>';
                     setTimeout( function(){
-                        document.getElementById('user-mask').outerHTML = ''; 
+                        document.getElementById('user-mask').outerHTML = '';
                     }, 1000);
                 }, function(respond) {
                     alert('身份验证失败，请重试。');

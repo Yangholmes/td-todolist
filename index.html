@@ -7,17 +7,59 @@
   </head>
   <body>
     <div id="app"></div>
-
-    <!--<script>
-      <?php require_once(__DIR__.'/server/api/Auth.php'); ?>
-      var _config =
-        <?php
-          $auth = new Auth(1);  // debug: 1表示本地调试；0表示远程服务器。使用本地调试时，请注意修改config文件
-          echo json_encode($auth->get_signature());
-        ?>
+    <!-- <script src="http://g.alicdn.com/dingding/open-develop/1.5.1/dingtalk.js"></script> -->
+    <script src="./dd-init.js"></script>
+    <script>
+       _user = {
+        "orderInDepts": {
+          1: 69618531977482488,
+          6530723: 69618531977482488
+        },
+        "position": "",
+        "remark": "",
+        "department": [1, 6530723],
+        "tel": "",
+        "unionid": "RKdLWiSoLRTaNx2yUDbmsZgiEiE",
+        "userid": "03424264076698",
+        "isSenior": false,
+        "dingId": "$:LWCP_v1:$XjVQJF2K1NNTChUngjLuCA==",
+        "workPlace": "",
+        "isBoss": false,
+        "name": "梁弘扬",
+        "orgEmail": "yangholmes@exmail.qq.com",
+        "errmsg": "ok",
+        "stateCode": "86",
+        "avatar": "http://static.dingtalk.com/media/lADOp1YGhs0Bn80Bng_414_415.jpg",
+        "errcode": 0,
+        "jobnumber": "03424264076698",
+        "isLeaderInDepts": {
+          1: false,
+          6530723: false
+        },
+        "email": "",
+        "active": true,
+        "isAdmin": true,
+        "isHide": false,
+        "mobile": "17098907535",
+        "openId": "RKdLWiSoLRTaNx2yUDbmsZgiEiE",
+        "deviceId": "45378c72524764608444090bdf41b850",
+        "admin_level": 2,
+        "emplId": "03424264076698"
+      };
+      _config = {
+        "agentId": {
+          0: "100844581"
+        },
+        "corpId": {
+          0: "dingc4aebce85d94b448"
+        },
+        "timeStamp": 1497591568,
+        "nonceStr": "2noGjw90oRbyZZI",
+        "signature": "ff11172a57b6f38392fe0d5492603e4580212a8f",
+        "accessToken": "2abfcefcc8233b4482202eb428cc9169"
+      };
+      HOST = 'http://192.168.4.16/dingding/td-todolist';
     </script>
-    <script src="http://g.alicdn.com/dingding/open-develop/1.5.1/dingtalk.js"></script>
-    <script src="./dd-init.js"></script>-->
 
     <script src="./dist/build.js"></script>
   </body>
