@@ -73,7 +73,7 @@ export default {
     openDatePicker () {
       let that = this;
       // 引入钉钉后可用
-      dd.biz.util.datetimepicker({
+      dd.biz.util.datepicker({
         format: 'yyyy-MM-dd',
         value: '', //默认显示
         onSuccess : function(result) {
