@@ -73,7 +73,13 @@ export default {
       this.other = {user: _user.emplId};
     },
     popupWatchOther () {
-      this.watchOtherPopupVisible = !this.watchOtherPopupVisible;
+      console.log(_user.department);
+      if( _user.department.indexOf(6584151) != -1 ){ // 按照权限打开
+        this.watchOtherPopupVisible = !this.watchOtherPopupVisible;
+      }
+      else{
+        this.$message.error({showClose: true, message: '您不是管理干部，不能随便看别人。'});
+      }
     },
     watchOther (other) {
       this.watchOtherPopupVisible = false;
