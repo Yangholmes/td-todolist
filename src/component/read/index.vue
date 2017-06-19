@@ -74,7 +74,7 @@ export default {
     },
     popupWatchOther () {
       console.log(_user.department);
-      if( _user.department.indexOf(6584151) != -1 ){ // 按照权限打开
+      if( _user.department.indexOf(40500828) != -1 ){ // 按照权限打开
         this.watchOtherPopupVisible = !this.watchOtherPopupVisible;
       }
       else{
