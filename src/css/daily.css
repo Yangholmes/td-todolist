@@ -72,3 +72,24 @@
   margin-left: -30px;
   margin-top: -10px;
 }
+.dailycc-group{
+  font-size: .5em;
+  margin: 3px;
+  border-radius: 5px;
+  border: #c3c3c3 solid;
+  border-width: 1px;
+}
+
+.dailycc-group span{
+  padding: 0 3px;
+}
+.dailycc-group .dailycc-read{
+  background-color: #c3c3c3 ;
+  color: white;
+}
+.dailycc-group.hasreaded{
+  border-color: #37C355;
+}
+.dailycc-read.hasreaded{
+  background-color: #37C355;
+}

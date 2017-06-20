@@ -14,6 +14,8 @@
             <div class="heading">任务{{ index+1 }} <i v-if="o.status == '1'" class="el-icon-check"></i><i v-else class="el-icon-more"></i></div>
             <p class="info">{{o.content}}</p>
         </div>
+        <div><span v-for="o in dailyCc" class="dailycc-group" :class="o.read=='1'?'hasreaded':''">
+          <span>{{o.name}}</span><span class="dailycc-read" :class="o.read=='1'?'hasreaded':''">{{o.read=='1'?'已阅':'未读'}}</span></span></div>
     </el-card>
 </div>
 </template>
@@ -27,7 +29,9 @@ export default {
             createDate: this.history.attendance.createDate ? this.history.attendance.createDate : '',
             attendance: this.history.attendance.attendance ? this.history.attendance.attendance : '',
             dailys: this.history.dailys ? this.history.dailys : [],
+            dailyCc: this.history.dailyCc ? this.history.dailyCc : [],
         };
-    }
+    },
+
 }
 </script>

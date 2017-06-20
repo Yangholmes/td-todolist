@@ -17,9 +17,10 @@ $offset = $_POST['offset'];
 /**
  * instance a new yangMysql class
  */
-$atdQuery = new yangMysql();$dailyQuery = new yangMysql();
-$atdQuery->selectTable("attendance"); 
+$atdQuery = new yangMysql();$dailyQuery = new yangMysql();$dailyCcQuery = new yangMysql();
+$atdQuery->selectTable("attendance");
 $dailyQuery->selectTable("daily");
+$dailyCcQuery->selectTable("dailyCc");
 $condition = "user = '$user'";
 $attendances = $atdQuery->simpleSelect(null, $condition, ['`createDate`', 'DESC'], [$offset,5]);
 $results = array();
@@ -34,7 +35,8 @@ if($attendances === false){
 			$attendanceId = $attendances[$i]['id'];
 			$condition2 = "attendance = '$attendanceId'";
 			$dailys = $dailyQuery->simpleSelect(null, $condition2, null, null);
-			array_push($results,["attendance"=>$attendances[$i], "dailys"=>$dailys]);
+      $dailyCc = $dailyCcQuery->query("select user.name,dailyCc.* from dailyCc LEFT JOIN user on user.emplId=dailyCc.user where attendance = '$attendanceId'");
+			array_push($results,["attendance"=>$attendances[$i], "dailys"=>$dailys,"dailyCc"=>$dailyCc]);
 		}
 		$errorMsg = '';
 	}
@@ -45,7 +47,6 @@ if($attendances === false){
 
 $response = [
   "results"=> $results,
-  "attendance"=>$attendances,
   "error"    => $error,
   "errorMsg" => $errorMsg
 ];
