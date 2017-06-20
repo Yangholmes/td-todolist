@@ -15,10 +15,10 @@
     <!-- 日志 -->
     <history  v-for="(item,index) in historys" :key="index" :history="item"></history>
     <div v-if="!historys.length" class="read-component-info">
-      纪录为空。。。
+      当天纪录为空。。。
     </div>
     <div v-if="isloadMore" class="read-component-info">
-      <span @click="loadMore">点击加载</span>
+      <span @click="loadMore">点击加载历史</span>
     </div>
   </div>
 </template>
@@ -119,11 +119,13 @@ export default {
       });
     },
     selectARecord: function(){
-      var url = HOST+'/php/daily/daily-retrieve.php'
+      var url = HOST+'/php/daily/daily-retrieve.php';
       var param = {
           user: this.currentUser,
           createDate:this.selectDate
       };
+      //if(this.currentUser != _user.emplId){param.currentUser=_user.emplId};
+      param.currentUser='mj';
       console.log(param);
       this.loading=true;
     this.$http.post(url, param, {
