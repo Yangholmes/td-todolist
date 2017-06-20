@@ -50,7 +50,7 @@ export default {
         otherDate = localStorage.getItem('otherDate');
     if(otherDate&&otherUser){
       this.other = {user: otherUser, date: otherDate};
-      localStorage.clear();
+      localStorage.removeItem('otherUser'); localStorage.removeItem('otherDate');
       this.currentUser = this.other.user;
       this.selectDate = this.other.date;
     }
@@ -58,7 +58,7 @@ export default {
       this.other = null;
     }
     this.selectARecord();
-    localStorage.clear();
+    localStorage.removeItem('otherUser'); localStorage.removeItem('otherDate');
   },
   methods:{
     loadMore:function(){
@@ -78,7 +78,7 @@ export default {
         this.watchOtherPopupVisible = !this.watchOtherPopupVisible;
       }
       else{
-        this.$message.error({showClose: true, message: '您不是管理干部，不能随便看别人。'});
+        this.$message.error({showClose: true, message: '您不是管理干部，不能随便看别人'});
       }
     },
     watchOther (other) {
