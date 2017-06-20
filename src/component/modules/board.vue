@@ -141,7 +141,7 @@ export default {
         finishDate: null,
         rate: null,
         toolbar: false,
-        user: "03424264076698",
+        user: _user.emplId,
         status: 0
       };
     },
