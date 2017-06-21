@@ -130,29 +130,57 @@ export default {
           user: this.currentUser,
           createDate:this.selectDate
       };
-      //if(this.currentUser != _user.emplId){param.currentUser=_user.emplId};
-      param.currentUser='mj';
-      console.log(param);
-      this.loading=true;
-    this.$http.post(url, param, {
-        emulateJSON: true,
-        headers: {
-            'Content-Type': 'enctype="application/x-www-form-urlencoded; charset=utf-8"'
+      let delay = setInterval( ()=>{
+        if(_user.emplId){
+          clearInterval(delay);
+          if(this.currentUser != _user.emplId){ param.currentUser=_user.emplId };
+          // param.currentUser='mj';
+          console.log(param);
+          this.loading=true;
+          this.$http.post(url, param, {
+              emulateJSON: true,
+              headers: {
+                  'Content-Type': 'enctype="application/x-www-form-urlencoded; charset=utf-8"'
+              }
+          }).then((response)=>{
+            if(response.data.error == 0){
+              if(!response.data.attendance.attendance){
+                this.$message({message: '已经没有纪录了哦',type: 'warning'});
+              }else{
+                response.data.attendance.attendance = response.data.attendance.attendance.split(",");
+                this.historys.push(response.data);
+              }
+            }
+            this.loading=false;
+          }, (response)=>{
+              this.loading=false;
+              this.$message.error({showClose: true, message: '日志查询失败!'});
+            });
         }
-    }).then((response)=>{
-      if(response.data.error == 0){
-        if(!response.data.attendance.attendance){
-          this.$message({message: '已经没有纪录了哦',type: 'warning'});
-        }else{
-          response.data.attendance.attendance = response.data.attendance.attendance.split(",");
-          this.historys.push(response.data);
-        }
-      }
-      this.loading=false;
-    }, (response)=>{
-        this.loading=false;
-        this.$message.error({showClose: true, message: '日志查询失败!'});
-      });
+      }, 1000);
+      // if(this.currentUser != _user.emplId){ param.currentUser=_user.emplId };
+      // // param.currentUser='mj';
+      // console.log(param);
+      // this.loading=true;
+      // this.$http.post(url, param, {
+      //     emulateJSON: true,
+      //     headers: {
+      //         'Content-Type': 'enctype="application/x-www-form-urlencoded; charset=utf-8"'
+      //     }
+      // }).then((response)=>{
+      //   if(response.data.error == 0){
+      //     if(!response.data.attendance.attendance){
+      //       this.$message({message: '已经没有纪录了哦',type: 'warning'});
+      //     }else{
+      //       response.data.attendance.attendance = response.data.attendance.attendance.split(",");
+      //       this.historys.push(response.data);
+      //     }
+      //   }
+      //   this.loading=false;
+      // }, (response)=>{
+      //     this.loading=false;
+      //     this.$message.error({showClose: true, message: '日志查询失败!'});
+      //   });
     },
   }
 }
