@@ -160,9 +160,6 @@ export default {
               if(this.attId == -1){
                 this.$message.error('初始化失败，请退出重新进入');
               }else{
-                for(var i=0; i<this.ccUserIds.length; i++){//去重
-                  if(this.ccUserIds[i].user == '03401659233316') {this.ccUserIds.splice(i,1); break;}
-                }
                 this.ccUserIds.push({user:'03401659233316'}); // 加上固定的抄送人  陈总
                 // this.ccUserIds.push({user:'03424264076698'}); // 加上固定的抄送人  小红
                 let att=this.attendance.toString();
@@ -217,7 +214,7 @@ export default {
                startWithDepartmentId: 0, //-1表示打开的通讯录从自己所在部门开始展示, 0表示从企业最上层开始，(其他数字表示从该部门开始:暂时不支持)
                multiple: true, //是否多选： true多选 false单选； 默认true
                users: null, //默认选中的用户列表，userid；成功回调中应包含该信息
-               disabledUsers: null, // 不能选中的用户列表，员工userid
+               disabledUsers: ['03401659233316'], // 不能选中的用户列表，员工userid (默认选中陈总)
                corpId: window._config.corpId, //企业id
                // max: , //人数限制，当multiple为true才生效，可选范围1-1500
                limitTips: "挑太多啦！", //超过人数限制的提示语可以用这个字段自定义
