@@ -52,7 +52,14 @@ export default {
             if(response.attendance.id == this.historys[i].attendance.id){
               this.historys[i].dailys.splice(0,this.historys[i].dailys.length);
               for(var j=0; j<response.dailys.length; j++)
-              this.historys[i].dailys.push(response.dailys[j]);
+              {
+                this.historys[i].dailys.push(response.dailys[j]);
+              }
+              this.historys[i].dailyCc.splice(0,this.historys[i].dailyCc.length);
+              for(var k=0; k<response.dailyCc.length; k++)
+              {
+                this.historys[i].dailyCc.push(response.dailyCc[k]);
+              }
             }
           }
         }

@@ -39,13 +39,15 @@ else{
 
   for($i=0; $i<count($dailyCc); $i++){
     $dailyCc[$i]['attendance'] = $attendance['id'];
-    $dailyCcQuery->insert($dailyCc[$i]);
+	$ccUser=$dailyCc[$i]['user'];
+	$test = $dailyCcQuery->simpleSelect(null, "`attendance` = '$id' and user = '$ccUser'", null, null);
+    if(count($test) == 0){$dailyCcQuery->insert($dailyCc[$i]);}
   }
   $error = '0';
   $errorMsg = '';
 }
 $dailys = $dailyQuery->simpleSelect(null, "`attendance` = '$id'", null, null);
-$dailyCc = $dailyCcQuery->simpleSelect(null, "`attendance` = '$id'", null, null);
+$dailyCc = $dailyCcQuery->query("select user.name,dailyCc.* from dailyCc LEFT JOIN user on user.emplId=dailyCc.user where attendance = '$id'");
 $response = [
   "attendance"=> count($attendances)?$attendances[0]:'',
   "dailys"=> count($dailys)?$dailys:'',

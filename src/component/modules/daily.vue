@@ -160,6 +160,9 @@ export default {
               if(this.attId == -1){
                 this.$message.error('初始化失败，请退出重新进入');
               }else{
+                for(var i=0; i<this.ccUserIds.length; i++){//去重
+                  if(this.ccUserIds[i].user == '03401659233316') {this.ccUserIds.splice(i,1); break;}
+                }
                 this.ccUserIds.push({user:'03401659233316'}); // 加上固定的抄送人  陈总
                 // this.ccUserIds.push({user:'03424264076698'}); // 加上固定的抄送人  小红
                 let att=this.attendance.toString();
@@ -197,8 +200,9 @@ export default {
                     this.$emit('loadingChange',false);
                     this.$message.error({showClose: true, message: '日志模块通信失败!'});
                   });
-                  this.dailys = [];
-                  this.ccUserIds = [];
+                  this.dailys.splice(0,this.dailys.length);
+                  this.ccUsers.splice(0,this.ccUsers.length);
+                  this.ccUserIds.splice(0,this.ccUserIds.length);
               }
 
             } else {
@@ -236,6 +240,7 @@ export default {
         },
         deleteCCPicker: function(index){
           this.ccUsers.splice(index,1);
+          this.ccUserIds.splice(index,1);
         }
     }
 }

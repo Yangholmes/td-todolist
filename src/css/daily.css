@@ -73,7 +73,8 @@
   margin-top: -10px;
 }
 .dailycc-group{
-  font-size: .5em;
+  display: inline-block;
+  font-size: 12px;
   margin: 3px;
   border-radius: 5px;
   border: #c3c3c3 solid;
