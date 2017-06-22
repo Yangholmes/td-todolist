@@ -16,8 +16,8 @@
 
 <script>
 // import daily from '../modules/daily.vue'
-import history from '../modules/history.vue'
-import board from '../modules/board.vue'
+// import history from '../modules/history.vue'
+// import board from '../modules/board.vue'
 
 export default {
     data() {
@@ -31,8 +31,8 @@ export default {
     },
     components: { // 注册组件，这很重要
         daily: (resolve) => require(['../modules/daily.vue'], resolve),
-        history,
-        board
+        history: (resolve) => require(['../modules/history.vue'], resolve),
+        board: (resolve) => require(['../modules/board.vue'], resolve)
     },
     mounted:function () {
       console.log('mounted', new Date());

@@ -78,8 +78,7 @@ if($error == '0'){
   	"message_url" => SERVER_HOST."/msg-redirect.html?user=".$user['emplId']."&date=".$attendance['createDate']."&signature=".randomIdFactory(10),
   	"image"=> "", // 图片
   	"rich" => ["num" => '', "unit" => $attendance['createDate']],
-  	"content" => "摘要："."\n".$dailys[0]['content']."\n……\n",
+  	"content" => "摘要："."\n".mb_substr($dailys[0]['content'], 0, 20, 'utf-8')."\n……\n",
     "bgcolor" => "ff40B782"
   ]);
 }
-
