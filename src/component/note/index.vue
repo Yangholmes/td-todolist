@@ -8,7 +8,7 @@
 </div>
   <div style="text-align:center;color: #adadad;font-size: .8em; height: 2em; line-height: 2em;">
     <span @click="loadMore">加载历史</span></div>
-  <history  v-for="(item,index) in historys" :key="item.attendance.id" :history="item"></history>
+  <history v-for="(item, index) in historys" :key="item.attendance.id" :history="item"></history>
   <daily v-on:dailySubmit="submit"  v-on:loadingChange="loadingChange"></daily>
 
 </div>
