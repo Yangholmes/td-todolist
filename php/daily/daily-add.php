@@ -46,7 +46,7 @@ else{
   }
   $id=$attendance['id'];
   $dailys = $dailyQuery->simpleSelect(null, "`attendance` = '$id'", null, null);
-  $dailyCc = $dailyCcQuery->simpleSelect(null, "`attendance` = '$id'", null, null);
+  $dailyCc = $dailyCcQuery->query("select user.name,dailyCc.* from dailyCc LEFT JOIN user on user.emplId=dailyCc.user where attendance = '$id'");
   $error = '0';
   $errorMsg = '';
 }
