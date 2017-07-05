@@ -7,7 +7,8 @@ module.exports = {
     path: path.resolve(__dirname, './dist'),
     publicPath: '/todolist/dist/',
     // publicPath: '/dist/',
-    filename: 'build.js'
+    filename: 'build.js' 
+    // filename: 'build.[hash].js'
   },
   module: {
     rules: [
