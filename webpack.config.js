@@ -1,5 +1,9 @@
 var path = require('path')
 var webpack = require('webpack')
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
+process.traceDeprecation = true
+plugins: [new BundleAnalyzerPlugin()]
 
 module.exports = {
   entry: './src/main.js',
@@ -7,7 +11,7 @@ module.exports = {
     path: path.resolve(__dirname, './dist'),
     publicPath: '/todolist/dist/',
     // publicPath: '/dist/',
-    filename: 'build.js' 
+    filename: 'build.js'
     // filename: 'build.[hash].js'
   },
   module: {
